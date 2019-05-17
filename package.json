@@ -1,0 +1,32 @@
+{
+  "name": "glsl-graphics-ts",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "webpack-dev-server"
+  },
+  "author": "ukonpower",
+  "license": "MIT",
+  "devDependencies": {
+    "browser-sync": "^2.26.3",
+    "del": "^3.0.0",
+    "glsl-shader-loader": "^0.1.6",
+    "gulp": "^4.0.0",
+    "gulp-autoprefixer": "^5.0.0",
+    "gulp-cssmin": "^0.2.0",
+    "gulp-plumber": "^1.2.1",
+    "gulp-pug": "^4.0.1",
+    "gulp-sass": "^4.0.2",
+    "minimist": "^1.2.0",
+    "ts-loader": "^6.0.0",
+    "ts-shader-loader": "^1.0.5",
+    "typescript": "^3.4.5",
+    "webpack": "^4.30.0",
+    "webpack-stream": "^5.2.1"
+  },
+  "dependencies": {
+    "ore-three-ts": "0.0.4",
+    "three": "^0.104.0"
+  }
+}
