@@ -23,6 +23,9 @@ void main() {
 	vp.xy *= rotate(-(cos((-length(vp.x) - length(vp.z)) * 3.0 + time) + 1.0) / 2.0 * 0.5 - stp);
 	vp.xz *= rotate(r * blk + stp * PI);
 
+	vp.xz *= rotate(-0.3);
+	vp.yz *= rotate(-0.3);
+
 	vec4 mvPosition = modelViewMatrix * vec4(wp + vp, 1.0);
 	gl_Position = projectionMatrix * mvPosition;
 	vViewPosition = -mvPosition.xyz;

@@ -67,8 +67,15 @@ export default class Flower extends THREE.Object3D{
             lights: true,
             side: THREE.DoubleSide
         })
+        let flower = new THREE.Mesh(geo, mat)
+        flower.position.y = -0.3
+        this.add(flower);
 
-        this.add(new THREE.Mesh(geo, mat));
+        // let edageo = new THREE.CylinderBufferGeometry(0.02,0.02,1.2,3,1);
+        // let edaMat = new THREE.MeshNormalMaterial();
+        // let eda = new THREE.Mesh(edageo,edaMat);
+        // eda.position.y = -0.6;
+        // this.add(eda);
     }
 
     update(time) {

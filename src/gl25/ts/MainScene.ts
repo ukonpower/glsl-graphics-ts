@@ -1,8 +1,10 @@
 import * as ORE from 'ore-three-ts'
 import * as THREE from 'three';
 
-import Flower from '././Flower';
+import Flower from './Flower';
 import NoisePostProcessig from './NoisePostProcessing';
+
+import bgFrag from './shaders/bg.fs';
 
 export default class MainScene extends ORE.BaseScene{
 	private light: THREE.Light;
@@ -11,6 +13,8 @@ export default class MainScene extends ORE.BaseScene{
 	private rotator: ORE.MouseRotator;
 
 	private npp: NoisePostProcessig;
+	private uni: any;
+	private bg: ORE.Background;
 
 	constructor(renderer){
 		super(renderer);
@@ -19,8 +23,10 @@ export default class MainScene extends ORE.BaseScene{
 	}
 
 	init(){
-		this.camera.position.set(0,1.5,3);
-		this.camera.lookAt(0,0,0);
+		this.onResize(window.innerWidth,window.innerHeight);
+		
+		// this.camera.position.y = 1.0;
+		// this.camera.lookAt(0,-0.1,0);
 		
         this.light = new THREE.DirectionalLight();
         this.light.position.y = 10;
@@ -37,6 +43,15 @@ export default class MainScene extends ORE.BaseScene{
 		this.rotator = new ORE.MouseRotator(this.flower);
 
 		this.npp = new NoisePostProcessig(this.renderer);
+
+		this.uni = {
+			time: {
+				value: 0
+			}
+		}
+		
+		this.bg = new ORE.Background(bgFrag,this.uni);
+		this.scene.add(this.bg);
 	}
 
 	animate(){
@@ -45,12 +60,19 @@ export default class MainScene extends ORE.BaseScene{
 
 		this.npp.update(this.time);
 		this.npp.render(this.scene,this.camera);
-		
-		// this.renderer.render(this.scene,this.camera);
+		this.camera.updateProjectionMatrix();
 	}
 
 	onResize(width, height) {
 		super.onResize(width,height);
+
+		let aspect = width / height;
+        if(aspect > 1.0){
+            this.camera.position.z = 3;
+        }else{
+            this.camera.position.z = 6;
+		}
+		this.camera.lookAt(0,-0.1,0);
 	}
 
     onTouchStart(event:MouseEvent) {
