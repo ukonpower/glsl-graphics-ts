@@ -23,7 +23,7 @@ export default class Background extends THREE.Object3D{
 		this.add(this.bg);
 	}
 
-	public update(time){
+	public update(time:number){
 		this.uni.time.value = time;
 	}
 }

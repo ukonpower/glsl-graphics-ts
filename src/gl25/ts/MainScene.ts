@@ -3,18 +3,19 @@ import * as THREE from 'three';
 
 import Flower from './Flower';
 import NoisePostProcessig from './NoisePostProcessing';
-
-import bgFrag from './shaders/bg.fs';
+import Background from './Background';
 
 export default class MainScene extends ORE.BaseScene{
 	private light: THREE.Light;
 	private alight: THREE.Light;
 	private flower: Flower;
+	private flower2: Flower;
 	private rotator: ORE.MouseRotator;
 
+	private touchStart: number;
+
 	private npp: NoisePostProcessig;
-	private uni: any;
-	private bg: ORE.Background;
+	private bg: Background;
 
 	constructor(renderer){
 		super(renderer);
@@ -37,30 +38,32 @@ export default class MainScene extends ORE.BaseScene{
 		this.alight.intensity = 0.5;
 		this.scene.add(this.alight);
 
+		this.bg = new Background();
+		this.scene.add(this.bg);
+
 		this.flower = new Flower();
 		this.scene.add(this.flower);
+
+		this.flower2 = new Flower();
+		this.flower2.rotateX(Math.PI);
+		this.flower2.scale.set(0.7,0.7,0.7)
+		this.flower.add(this.flower2);
 
 		this.rotator = new ORE.MouseRotator(this.flower);
 
 		this.npp = new NoisePostProcessig(this.renderer);
-
-		this.uni = {
-			time: {
-				value: 0
-			}
-		}
-		
-		this.bg = new ORE.Background(bgFrag,this.uni);
-		this.scene.add(this.bg);
 	}
 
 	animate(){
 		this.flower.update(this.time);
+		this.flower2.update(this.time + Math.PI + 0.2);
 		this.rotator.update();
 
 		this.npp.update(this.time);
 		this.npp.render(this.scene,this.camera);
-		this.camera.updateProjectionMatrix();
+
+		this.bg.update(this.time);
+		
 	}
 
 	onResize(width, height) {
@@ -70,19 +73,29 @@ export default class MainScene extends ORE.BaseScene{
         if(aspect > 1.0){
             this.camera.position.z = 3;
         }else{
-            this.camera.position.z = 6;
+            this.camera.position.z = 5;
 		}
-		this.camera.lookAt(0,-0.1,0);
+		this.camera.lookAt(0,-0.0,0);
 	}
 
     onTouchStart(event:MouseEvent) {
-		
+		this.touchStart = this.time;
 	}
 
     onTouchMove(event:MouseEvent) {
 		this.rotator.addVelocity(new THREE.Vector2(this.cursor.deltaX,this.cursor.deltaY));
+		event.preventDefault();
 	}
 
     onTouchEnd(event:MouseEvent) { 
+		if(this.time - this.touchStart < 0.1){
+			let c = new THREE.Vector3(Math.random(),Math.random(),Math.random());
+			this.flower.setCol(c);
+			this.flower2.setCol(c);
+			this.npp.addNoise();
+			console.log("click");
+			
+		}
+		console.log(this.time - this.touchStart)
 	}
 }

@@ -3,6 +3,7 @@ import frag from './shaders/flower.fs';
 
 import * as THREE from 'three';
 import * as ORE from 'ore-three-ts';
+import { Vector2 } from 'three';
 
 export default class Flower extends THREE.Object3D{
     private uni: any;
@@ -13,7 +14,6 @@ export default class Flower extends THREE.Object3D{
         super();
         this.num = 36;
         this.size = new THREE.Vector2(1,1);
-
         this.createFlower();
     }
 
@@ -53,6 +53,9 @@ export default class Flower extends THREE.Object3D{
             },
             all: {
                 value: this.num
+            },
+            col: {
+                value: new THREE.Vector3(0.2,0.9,1.0)
             }
         }
 
@@ -67,18 +70,18 @@ export default class Flower extends THREE.Object3D{
             lights: true,
             side: THREE.DoubleSide
         })
-        let flower = new THREE.Mesh(geo, mat)
-        flower.position.y = -0.3
-        this.add(flower);
 
-        // let edageo = new THREE.CylinderBufferGeometry(0.02,0.02,1.2,3,1);
-        // let edaMat = new THREE.MeshNormalMaterial();
-        // let eda = new THREE.Mesh(edageo,edaMat);
-        // eda.position.y = -0.6;
-        // this.add(eda);
+        let flower = new THREE.Mesh(geo, mat)
+        flower.position.y = 0.00;
+
+        this.add(flower);
     }
 
-    update(time) {
+    update(time: number) {
         this.uni.time.value = time;
+    }
+
+    setCol(col: THREE.Vector3){
+        this.uni.col.value = col;
     }
 }

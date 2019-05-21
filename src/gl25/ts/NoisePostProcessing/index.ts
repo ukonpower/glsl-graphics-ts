@@ -21,6 +21,9 @@ export default class NoisePostProcessing extends THREE.Object3D{
 				uniforms:{
 					time: { 
 						value: 0,
+					},
+					nw: { 
+						value: 0,
 					}
 				}
 			}
@@ -31,9 +34,14 @@ export default class NoisePostProcessing extends THREE.Object3D{
 
 	update(time){
 		this.ppParam[0].uniforms.time.value = time;
+		this.ppParam[0].uniforms.nw.value *= 0.8;
 	}
 
 	render(scene:THREE.Scene,camera:THREE.Camera){
 		this.pp.render(scene,camera);
+	}
+
+	addNoise(){
+		this.ppParam[0].uniforms.nw.value = 1.0;
 	}
 }
