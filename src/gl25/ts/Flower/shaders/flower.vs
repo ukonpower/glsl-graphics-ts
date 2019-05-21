@@ -47,8 +47,8 @@ void main() {
 
 
 	// vp.xz *= rotate(-2.5);
-	vp.yz *= rotate(-1.0);
-	vp.xz *= rotate(0.3);
+	// vp.yz *= rotate(-1.0);
+	// vp.xz *= rotate(0.3);
 	
 	vec4 mvPosition = modelViewMatrix * vec4(wp + vp, 1.0);
 	gl_Position = projectionMatrix * mvPosition;

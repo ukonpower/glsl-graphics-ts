@@ -46,8 +46,11 @@ export default class MainScene extends ORE.BaseScene{
 
 		this.flower2 = new Flower();
 		this.flower2.rotateX(Math.PI);
-		this.flower2.scale.set(0.7,0.7,0.7)
+		this.flower2.scale.set(0.7,0.7,0.7);
+
 		this.flower.add(this.flower2);
+		this.flower.rotateX(0.7);
+		this.flower.rotateZ(-0.3);
 
 		this.rotator = new ORE.MouseRotator(this.flower);
 
@@ -68,7 +71,6 @@ export default class MainScene extends ORE.BaseScene{
 
 	onResize(width, height) {
 		super.onResize(width,height);
-
 		let aspect = width / height;
         if(aspect > 1.0){
             this.camera.position.z = 3;

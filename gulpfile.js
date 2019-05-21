@@ -94,7 +94,7 @@ gulp.task('clean', function(c){
 gulp.task('watch', function(){
     gulp.watch(srcBase + 'ts/**/*', gulp.series('webpack'));
     gulp.watch('./src/scss/*.scss', gulp.task('sass'));
-    gulp.watch(srcBase + '/pug/**/*.pug', gulp.task('pug'));
+    gulp.watch(srcBase + 'pug/**/*.pug', gulp.task('pug'));
     gulp.watch(srcBase + '**/*', gulp.task('copy'));
 });
 
