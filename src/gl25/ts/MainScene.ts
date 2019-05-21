@@ -1,13 +1,16 @@
 import * as ORE from 'ore-three-ts'
 import * as THREE from 'three';
+
 import Flower from '././Flower';
+import NoisePostProcessig from './NoisePostProcessing';
 
 export default class MainScene extends ORE.BaseScene{
-	private box: THREE.Mesh;
 	private light: THREE.Light;
 	private alight: THREE.Light;
 	private flower: Flower;
-	private rotator: ORE.ObjectMouseRotator;
+	private rotator: ORE.MouseRotator;
+
+	private npp: NoisePostProcessig;
 
 	constructor(renderer){
 		super(renderer);
@@ -31,13 +34,19 @@ export default class MainScene extends ORE.BaseScene{
 		this.flower = new Flower();
 		this.scene.add(this.flower);
 
-		this.rotator = new ORE.ObjectMouseRotator(this.flower);
+		this.rotator = new ORE.MouseRotator(this.flower);
+
+		this.npp = new NoisePostProcessig(this.renderer);
 	}
 
 	animate(){
-		this.renderer.render(this.scene,this.camera);
 		this.flower.update(this.time);
 		this.rotator.update();
+
+		this.npp.update(this.time);
+		this.npp.render(this.scene,this.camera);
+		
+		// this.renderer.render(this.scene,this.camera);
 	}
 
 	onResize(width, height) {
