@@ -6,8 +6,8 @@ uniform float time;
 uniform float all;
 uniform vec3 col;
 
-@import ../../../../glsl-chunks/rotate;
-@import ../../../../glsl-chunks/constants;
+$rotate
+$constants
 
 void main() {
 	vec3 c = vec3(0.0);

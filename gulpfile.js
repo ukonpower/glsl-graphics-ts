@@ -13,12 +13,12 @@ const del = require('del');
 
 const options = minimist(process.argv.slice(2), {
     default: {
-        gl: '1',
+        gl: '25',
         P: false,
     }
 });
 
-const srcBase = './src/gl' + options.gl + "/";
+const srcBase = './src/gl/' + options.gl + "/";
 
 gulp.task("webpack", function(){
     let conf = webpackConfig;
@@ -44,13 +44,23 @@ gulp.task('pug', function(){
         .pipe(pug({
             pretty: true,
             locals: {
-                title: 'gl' + options.gl,
+                title: options.gl,
             }
         }))
         .pipe(gulp.dest('./public/gl/'));
 });
 
 gulp.task("sass", function(){
+    return gulp.src(srcBase + "scss/style.scss")
+        .pipe(plumber())
+        .pipe(autoprefixer())
+        .pipe(sass())
+        .pipe(cssmin())
+        .pipe(gulp.dest("./public/gl/css/"))
+        .pipe(browserSync.stream());
+});
+
+gulp.task("sass-global", function(){
     return gulp.src("./src/scss/style.scss")
         .pipe(plumber())
         .pipe(autoprefixer())
@@ -87,22 +97,23 @@ gulp.task('clean', function(c){
         force: true,
     }).then(paths => {
         c();
-        console.log('Files and folders that would be deleted:\n', paths.join('\n'));
     });
 });
 
 gulp.task('watch', function(){
     gulp.watch(srcBase + 'ts/**/*', gulp.series('webpack'));
-    gulp.watch('./src/scss/*.scss', gulp.task('sass'));
+    gulp.watch(srcBase + 'scss/*.scss', gulp.task('sass'));
     gulp.watch(srcBase + 'pug/**/*.pug', gulp.task('pug'));
     gulp.watch(srcBase + '**/*', gulp.task('copy'));
+
+    gulp.watch('./src/scss/*.scss', gulp.task('sass-global'));
 });
 
 gulp.task('default', gulp.series(
     'clean',
     'copy',
     gulp.parallel(
-        'webpack', 'sass', 'pug'
+        'webpack', 'sass','sass-global', 'pug'
     ),
     gulp.parallel('browser-sync', 'watch'),
 ))

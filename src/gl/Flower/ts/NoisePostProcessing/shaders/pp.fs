@@ -7,8 +7,8 @@ uniform float nw;
 #define N 16
 
 
-@import ../../../../glsl-chunks/random;
-@import ../../../../glsl-chunks/noise3D;
+$random
+$noise3D
 
 void main(void){
 	vec3 c = vec3(0.0);

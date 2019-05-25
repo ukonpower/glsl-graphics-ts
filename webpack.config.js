@@ -14,7 +14,12 @@ module.exports = {
             },
             {
                 test: /\.(glsl|vs|fs)$/,
-                loader: 'ts-shader-loader'
+                loader: 'shader-loader',
+                options: {
+                    glsl: {
+                        chunkPath: "src/glsl-chunks"
+                    }
+                }
             }
         ]
     },
