@@ -1,11 +1,14 @@
 import * as ORE from 'ore-three-ts'
 import * as THREE from 'three';
+import Flower from './Flower';
 export default class MainScene extends ORE.BaseScene{
 	private light: THREE.Light;
 	private alight: THREE.Light;
 	private box: THREE.Object3D;
 
 	private touchStart: number;
+
+	private some: Flower
 
 	constructor(renderer){
 		super(renderer);
@@ -24,9 +27,13 @@ export default class MainScene extends ORE.BaseScene{
 		this.alight = new THREE.AmbientLight();
 		this.alight.intensity = 0.5;
 		this.scene.add(this.alight);
+
+		this.some = new Flower();
+		this.scene.add(this.some);
 	}
 
 	animate(){
+		this.some.update(this.time);
 		this.renderer.render(this.scene,this.camera);		
 	}
 
@@ -46,6 +53,9 @@ export default class MainScene extends ORE.BaseScene{
 	}
 
     onTouchMove(event:MouseEvent) {
+
+		this.some.mouseVertRotator.addVelocity(new THREE.Vector2(this.cursor.deltaX,this.cursor.deltaY));
+	
 	}
 
     onTouchEnd(event:MouseEvent) { 
