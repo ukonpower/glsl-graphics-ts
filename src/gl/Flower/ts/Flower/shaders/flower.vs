@@ -28,7 +28,6 @@ void main() {
 	vp.yz *= rotate(HPI);
 	vp.xy *= rotate(-(cos((-length(vp.x) - length(vp.z)) * 3.0 + time) + 1.0) / 2.0 * 0.5 - stp);
 	vp.xz *= rotate(r * blk + stp * PI);
-
 	
 	float cw = (sin(time) + 1.0 ) / 2.0;
 	

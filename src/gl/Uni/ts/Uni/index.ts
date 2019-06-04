@@ -1,5 +1,5 @@
-import vert from './shaders/flower.vs';
-import frag from './shaders/flower.fs';
+import vert from './shaders/uni.vs';
+import frag from './shaders/uni.fs';
 
 import * as THREE from 'three';
 import * as ORE from 'ore-three-ts';
@@ -14,13 +14,13 @@ export default class Flower extends THREE.Object3D{
 
     constructor() {
         super();
-        this.num = 306;
+        this.num = 300;
         this.size = new THREE.Vector2(1,1);
         this.createFlower();
     }
 
     createFlower() {
-        let originBox = new THREE.PlaneBufferGeometry(this.size.x,this.size.y,10,5);
+        let originBox = new THREE.CylinderBufferGeometry(0.1,0.1,1.0,10,10);
         let geo = new THREE.InstancedBufferGeometry();
 
         let vertice = (originBox.attributes.position as THREE.BufferAttribute).clone();
@@ -55,9 +55,6 @@ export default class Flower extends THREE.Object3D{
             },
             all: {
                 value: this.num
-            },
-            col: {
-                value: new THREE.Vector3(0.2,0.9,1.0)
             }
         }
 

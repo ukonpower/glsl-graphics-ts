@@ -1,6 +1,8 @@
 import * as ORE from 'ore-three-ts'
 import * as THREE from 'three';
-import Flower from './Flower';
+import Uni from './Uni';
+import NoisePostProcessing from './NoisePostProcessing';
+
 export default class MainScene extends ORE.BaseScene{
 	private light: THREE.Light;
 	private alight: THREE.Light;
@@ -8,7 +10,9 @@ export default class MainScene extends ORE.BaseScene{
 
 	private touchStart: number;
 
-	private some: Flower
+	private softUni: Uni
+
+	private pp: NoisePostProcessing
 
 	constructor(renderer){
 		super(renderer);
@@ -28,13 +32,18 @@ export default class MainScene extends ORE.BaseScene{
 		this.alight.intensity = 0.5;
 		this.scene.add(this.alight);
 
-		this.some = new Flower();
-		this.scene.add(this.some);
+		this.softUni = new Uni();
+		this.scene.add(this.softUni);
+
+		this.pp = new NoisePostProcessing(this.renderer);
 	}
 
 	animate(){
-		this.some.update(this.time);
-		this.renderer.render(this.scene,this.camera);		
+		this.softUni.update(this.time);
+
+		this.pp.update(this.time);
+		this.pp.render(this.scene,this.camera);
+		// this.renderer.render(this.scene,this.camera);	
 	}
 
 	onResize(width, height) {
@@ -54,7 +63,7 @@ export default class MainScene extends ORE.BaseScene{
 
     onTouchMove(event:MouseEvent) {
 
-		this.some.mouseVertRotator.addVelocity(new THREE.Vector2(this.cursor.deltaX,this.cursor.deltaY));
+		this.softUni.mouseVertRotator.addVelocity(new THREE.Vector2(this.cursor.deltaX,this.cursor.deltaY));
 	
 	}
 
