@@ -14,13 +14,13 @@ export default class Flower extends THREE.Object3D{
 
     constructor() {
         super();
-        this.num = 500;
+        this.num = 1000;
         this.size = new THREE.Vector2(1,1);
         this.createFlower();
     }
 
     createFlower() {
-        let originBox = new THREE.CylinderBufferGeometry(0.1,0.1,1.0,10,10);
+        let originBox = new THREE.CylinderBufferGeometry(0.1,0.1,1.0,5,30);
         let geo = new THREE.InstancedBufferGeometry();
 
         let vertice = (originBox.attributes.position as THREE.BufferAttribute).clone();
@@ -55,6 +55,9 @@ export default class Flower extends THREE.Object3D{
             },
             all: {
                 value: this.num
+            },
+            col: {
+                value: null
             }
         }
 
@@ -74,7 +77,7 @@ export default class Flower extends THREE.Object3D{
         flower.position.y = 0.00;
 
         this.mouseVertRotator = new MouseVertexRotator(flower,this.uni);
-        
+        this.changeColor();
         this.add(flower);
     }
 
@@ -83,7 +86,11 @@ export default class Flower extends THREE.Object3D{
         this.mouseVertRotator.update();
     }
 
-    setCol(col: THREE.Vector3){
+    public changeColor(){
+        let col = new THREE.Vector3();
+        col.x = Math.random() * 1.2;
+        col.y = Math.random() * 1.2;
+        col.z = Math.random() * 1.2;
         this.uni.col.value = col;
     }
 }

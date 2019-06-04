@@ -13,7 +13,7 @@ const del = require('del');
 
 const options = minimist(process.argv.slice(2), {
     default: {
-        gl: '25',
+        gl: 'untitle',
         P: false,
     }
 });

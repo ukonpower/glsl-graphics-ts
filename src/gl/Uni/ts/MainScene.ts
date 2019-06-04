@@ -21,7 +21,6 @@ export default class MainScene extends ORE.BaseScene{
 	}
 
 	init(){
-		this.onResize(window.innerWidth,window.innerHeight);
 		
         this.light = new THREE.DirectionalLight();
         this.light.position.y = 10;
@@ -36,6 +35,12 @@ export default class MainScene extends ORE.BaseScene{
 		this.scene.add(this.softUni);
 
 		this.pp = new NoisePostProcessing(this.renderer);
+		this.pp.addUniform({
+			name: 'rotVec',
+			value: this.softUni.mouseVertRotator.scrollVel
+		})
+		
+		this.onResize(window.innerWidth,window.innerHeight);
 	}
 
 	animate(){
@@ -50,11 +55,12 @@ export default class MainScene extends ORE.BaseScene{
 		super.onResize(width,height);
 		let aspect = width / height;
         if(aspect > 1.0){
-            this.camera.position.z = 3;
+            this.camera.position.z = 7;
         }else{
             this.camera.position.z = 10;
 		}
 		this.camera.lookAt(0,-0.0,0);
+		this.pp.resize(width,height);
 	}
 
     onTouchStart(event:MouseEvent) {
@@ -65,8 +71,13 @@ export default class MainScene extends ORE.BaseScene{
 
 		this.softUni.mouseVertRotator.addVelocity(new THREE.Vector2(this.cursor.deltaX,this.cursor.deltaY));
 	
+		event.preventDefault();
 	}
 
     onTouchEnd(event:MouseEvent) { 
+
+		if(this.softUni.mouseVertRotator.scrollVel.length() > 0.2){
+			this.softUni.changeColor();
+		}
 	}
 }

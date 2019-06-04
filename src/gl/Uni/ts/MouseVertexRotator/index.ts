@@ -40,6 +40,6 @@ export class MouseVertexRotator {
 	}
 
 	addVelocity(scrollDelta: THREE.Vector2) {
-		this.scrollVel.addVectors(this.scrollVel, scrollDelta.multiplyScalar(0.0005));
+		this.scrollVel.addVectors(this.scrollVel, scrollDelta.multiplyScalar(0.001));
 	}
 }

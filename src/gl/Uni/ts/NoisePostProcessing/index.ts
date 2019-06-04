@@ -22,8 +22,8 @@ export default class NoisePostProcessing extends THREE.Object3D{
 					time: { 
 						value: 0,
 					},
-					nw: { 
-						value: 0,
+					aspect:{
+						value: window.innerWidth / window.innerHeight
 					}
 				}
 			}
@@ -32,9 +32,12 @@ export default class NoisePostProcessing extends THREE.Object3D{
 		this.pp = new ORE.PostProcessing(this.renderer,this.ppParam)
 	}
 
+	addUniform(uni:any){
+		this.ppParam[0].uniforms[uni.name] = {value: uni.value};
+	}
+
 	update(time){
 		this.ppParam[0].uniforms.time.value = time;
-		this.ppParam[0].uniforms.nw.value *= 0.8;
 	}
 
 	render(scene:THREE.Scene,camera:THREE.Camera){
@@ -43,5 +46,9 @@ export default class NoisePostProcessing extends THREE.Object3D{
 
 	addNoise(){
 		this.ppParam[0].uniforms.nw.value = 1.0;
+	}
+
+	resize(width,height){
+		this.ppParam[0].uniforms.aspect.value = width / height;
 	}
 }
