@@ -14,7 +14,7 @@ export default class Flower extends THREE.Object3D{
 
     constructor() {
         super();
-        this.num = 300;
+        this.num = 500;
         this.size = new THREE.Vector2(1,1);
         this.createFlower();
     }

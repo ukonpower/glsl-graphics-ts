@@ -14,7 +14,7 @@ export class MouseVertexRotator {
 		this.rotate = new THREE.Quaternion();
 		this.rotMat = new THREE.Matrix4();
 		this.scrollVel = new THREE.Vector2(0,0);
-
+		
 		this.uniform = uniform;
 
 		this.uniform.rotVec = {
@@ -40,6 +40,6 @@ export class MouseVertexRotator {
 	}
 
 	addVelocity(scrollDelta: THREE.Vector2) {
-		this.scrollVel.addVectors(this.scrollVel, scrollDelta.multiplyScalar(0.001));
+		this.scrollVel.addVectors(this.scrollVel, scrollDelta.multiplyScalar(0.0005));
 	}
 }

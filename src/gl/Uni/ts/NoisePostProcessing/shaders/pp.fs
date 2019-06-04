@@ -24,19 +24,19 @@ void main(void){
     //     c += step(0.5,snoise(vec3(uv.y * 2.0 + 100.,uv.y * 2.0,time * 10.0)));
     // }
 
-    float w = max(.0,length(u)) * 0.05;
+    float w = max(.0,length(u.x)) * 0.05;
     
     vec2 vig = u * w;
 
-    // for(int i = 0; i < N; i++){
-    //     vig *= 1.0 + float(i) * 0.01;
-    //     c.x += texture2D(backbuffer,uv - vig).x;
-    //     c.y += texture2D(backbuffer,uv - vig * 0.5).y;
-    //     c.z += texture2D(backbuffer,uv - vig * 1.0).z;
-    // }
-    // c /= float(N) - 3.0;
+    for(int i = 0; i < N; i++){
+        vig *= 1.0 + float(i) * 0.01;
+        c.x += texture2D(backbuffer,uv - vig).x;
+        c.y += texture2D(backbuffer,uv - vig * 0.5).y;
+        c.z += texture2D(backbuffer,uv - vig * 1.0).z;
+    }
+    c /= float(N) - 3.0;
 
-    c = texture2D(backbuffer,vUv).xyz;
+    // c = texture2D(backbuffer,vUv).xyz;
 
 	c += random(uv + random(vec2(time))) * (0.15);
 	gl_FragColor = vec4(c,1.0);

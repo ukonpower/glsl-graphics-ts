@@ -52,7 +52,7 @@ export default class MainScene extends ORE.BaseScene{
         if(aspect > 1.0){
             this.camera.position.z = 3;
         }else{
-            this.camera.position.z = 5;
+            this.camera.position.z = 10;
 		}
 		this.camera.lookAt(0,-0.0,0);
 	}

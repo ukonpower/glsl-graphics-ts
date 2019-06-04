@@ -20,20 +20,28 @@ void main() {
 
 	vp.xz *= max(0.0,1.0 - len * 1.0) * 0.8;
 	vp.y += 1.0;
+	vp.y *= 1.0 + random(vec2(0.0,num * 10.345)) * 0.4;
 
 	float r = 0.1;
 	vp.z += sin(-time + len * 3.0) * r * len;
 	vp.x += cos(-time + len * 3.0) * r * len;
-	// c.z *= sin(length(vp.y) * 3.0 - time * 5.0);
-	// c.y *= abs(sin(length(vp.y) * 3.0 - time * 5.0 + 0.4));
+
+	c.x *= sin(length(vp.y) * 3.0 - time * 3.0);
+	c.y *= abs(sin(length(vp.y) * 3.0 - time * 3.0 + 0.4));
 
 	vp.yz *= rotate(random(vec2(0.0,num)) * TPI);
 	vp.xz *= rotate(random(vec2(num,0.0)) * TPI);
 
 	vp = vec4(rotation * vec4(vp,1.0)).xyz;
-	vp.yz *= rotate(rotVec.y * length(vp) * 5.0);
-	vp.xz *= rotate(-rotVec.x * length(vp) * 5.0);
 
+	float pw = length(vp) * (sin(num) + 2.0) / 2.0 * 50.0;
+
+	// pw *= pw * pw;
+
+	vp.yz *= rotate(rotVec.y * pw);
+	vp.xz *= rotate(-rotVec.x * pw);
+
+	c += length(rotVec) * 10.0;
 	mat4 mv = modelViewMatrix;
 	
 	vec4 mvPosition = mv * vec4(wp + vp, 1.0);
