@@ -8,12 +8,21 @@ class APP{
 
 	constructor(){
 		this.canvas = document.querySelector("#canvas");
-        this.controller = new ORE.Controller(this.canvas,true);
+
+        this.controller = new ORE.Controller({
+			canvas: this.canvas,
+			retina: true
+		});
+
         this.scene = new MainScene(this.controller.renderer);
-        this.controller.setScene(this.scene);
+		this.controller.setScene(this.scene);
+		
 	}
+
 }
 
 window.addEventListener('load',()=>{
+
 	let app = new APP();
+
 });

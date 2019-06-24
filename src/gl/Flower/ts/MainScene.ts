@@ -85,7 +85,7 @@ export default class MainScene extends ORE.BaseScene{
 	}
 
     onTouchMove(event:MouseEvent) {
-		this.rotator.addVelocity(new THREE.Vector2(this.cursor.deltaX,this.cursor.deltaY));
+		this.rotator.addVelocity(new THREE.Vector2(this.cursor.delta.x,this.cursor.delta.y));
 		event.preventDefault();
 	}
 
