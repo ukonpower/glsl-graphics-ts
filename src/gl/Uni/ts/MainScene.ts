@@ -4,6 +4,9 @@ import Uni from './Uni';
 import NoisePostProcessing from './NoisePostProcessing';
 
 export default class MainScene extends ORE.BaseScene{
+
+	private renderer: THREE.WebGLRenderer;
+
 	private light: THREE.Light;
 	private alight: THREE.Light;
 	private box: THREE.Object3D;
@@ -14,14 +17,20 @@ export default class MainScene extends ORE.BaseScene{
 
 	private pp: NoisePostProcessing
 
-	constructor(renderer){
-		super(renderer);
+	constructor(){
+		
+		super();
+		
 		this.name = "MainScene";
-		this.init();
+	
 	}
 
-	init(){
+	onBind( gProps: ORE.GlobalProperties ){
 		
+		super.onBind( gProps );
+
+		this.renderer = gProps.renderer;
+
         this.light = new THREE.DirectionalLight();
         this.light.position.y = 10;
         this.light.position.z = 10;
@@ -48,6 +57,7 @@ export default class MainScene extends ORE.BaseScene{
 
 		this.pp.update(this.time);
 		this.pp.render(this.scene,this.camera);
+
 		// this.renderer.render(this.scene,this.camera);	
 	}
 
@@ -63,18 +73,20 @@ export default class MainScene extends ORE.BaseScene{
 		this.pp.resize(width,height);
 	}
 
-    onTouchStart(event:MouseEvent) {
+    onTouchStart( cursor: ORE.Cursor, event:MouseEvent) {
+		
 		this.touchStart = this.time;
+
 	}
 
-    onTouchMove(event:MouseEvent) {
+    onTouchMove( cursor: ORE.Cursor, event:MouseEvent) {
 
-		this.softUni.mouseVertRotator.addVelocity(new THREE.Vector2(this.cursor.delta.x,this.cursor.delta.y));
+		this.softUni.mouseVertRotator.addVelocity(new THREE.Vector2( cursor.delta.x, cursor.delta.y));
 	
 		event.preventDefault();
 	}
 
-    onTouchEnd(event:MouseEvent) { 
+    onTouchEnd( cursor: ORE.Cursor, event:MouseEvent) { 
 
 		if(this.softUni.mouseVertRotator.scrollVel.length() > 0.2){
 			this.softUni.changeColor();

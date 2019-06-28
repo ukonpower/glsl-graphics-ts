@@ -113,7 +113,7 @@ export default class FluidGeometry extends THREE.Object3D{
     
         if( this.memPos ){
             
-            this.fluid.setPointer(  this.memPos, vec  );
+            this.fluid.setPointer(  this.memPos.add( new THREE.Vector2().subVectors( this.memPos, pos).multiplyScalar(1.0)) , vec  );
 
         }
 

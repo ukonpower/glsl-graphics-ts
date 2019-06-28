@@ -63,7 +63,7 @@ void main(){
   float pointerW = 1.0 - smoothstep( pointerSize * 0.05, pointerSize * 0.05, length(uv * vec2( screenAspect, 1.0 ) - pointerPos * vec2( screenAspect, 1.0 ) ) );
   
   // v += pointerW * pointerVec * 0.01;
-  v = mix( v, pointerVec * 0.01, pointerW);
+  v = mix( v, pointerVec * 0.03, pointerW);
 
   v *= viscosity;
   

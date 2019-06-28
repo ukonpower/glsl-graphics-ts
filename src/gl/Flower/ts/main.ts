@@ -14,8 +14,9 @@ class APP{
 			retina: true
 		});
 
-        this.scene = new MainScene(this.controller.renderer);
-		this.controller.setScene(this.scene);
+		this.scene = new MainScene();
+		
+		this.controller.bindScene(this.scene);
 		
 	}
 

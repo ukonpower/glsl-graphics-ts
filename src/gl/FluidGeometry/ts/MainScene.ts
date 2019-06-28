@@ -5,6 +5,7 @@ import NoisePostProcessing from './NoisePostProcessing';
 
 export default class MainScene extends ORE.BaseScene{
 
+	private renderer: THREE.WebGLRenderer;
 	private light: THREE.Light;
 	private alight: THREE.Light;
 
@@ -13,18 +14,24 @@ export default class MainScene extends ORE.BaseScene{
 
 	private touchStart: number;
 
-	private fluidGeometry: FluidGeometry
+	private fluidGeometry: FluidGeometry;
 
-	private pp: NoisePostProcessing
+	private pp: NoisePostProcessing;
 
-	constructor(renderer){
-		super(renderer);
+	constructor(){
+		
+		super();
+
 		this.name = "MainScene";
-		this.init();
+	
 	}
 
-	init(){
+	onBind( gProps: ORE.GlobalProperties ){
 		
+		super.onBind( gProps );
+
+		this.renderer = this.gProps.renderer;
+
         this.light = new THREE.DirectionalLight();
         this.light.position.y = 10;
         this.light.position.z = 10;
@@ -58,31 +65,11 @@ export default class MainScene extends ORE.BaseScene{
 	}
 
 	animate(){
-
-        var halfWidth = innerWidth / 2;
-        var halfHeight = innerHeight / 2;
-		var pointer = new THREE.Vector2((this.cursor.position.x - halfWidth) / halfWidth, (this.cursor.position.y - halfHeight) / halfHeight);
-		pointer.y *= -1;
-
-        this.raycaster.setFromCamera(pointer, this.camera); 
-		var intersects = this.raycaster.intersectObjects([this.screen]);
-
-		let pos = new THREE.Vector2();
-
-		if(intersects.length > 0){
-
-            var point = intersects[0].point;   
-			pos.set( ( point.x + 7.5 ) / 15, (point.y + 7.5 ) / 15 );
-
-		}
 		
-
-		let vec = new THREE.Vector2( this.cursor.delta.x, -this.cursor.delta.y ).multiplyScalar(1.0);
-
-		this.fluidGeometry.setPointer( pos, vec);
 		this.fluidGeometry.update(this.time);
 
-		this.renderer.render(this.scene,this.camera);	
+		this.renderer.render(this.scene,this.camera);
+
 	}
 
 	onResize(width, height) {
@@ -106,18 +93,44 @@ export default class MainScene extends ORE.BaseScene{
 	
 	}
 
-    onTouchStart(event:MouseEvent) {
+    onTouchStart( cursor: ORE.Cursor, event:MouseEvent) {
 	
 		this.touchStart = this.time;
 	
 	}
 
-    onTouchMove(event:MouseEvent) {
+    onTouchMove( cursor: ORE.Cursor, event:MouseEvent) {
+
+		var halfWidth = innerWidth / 2;
+        var halfHeight = innerHeight / 2;
+		var pointer = new THREE.Vector2(( cursor.position.x - halfWidth) / halfWidth, ( cursor.position.y - halfHeight) / halfHeight);
+		pointer.y *= -1;
+
+        this.raycaster.setFromCamera(pointer, this.camera); 
+		var intersects = this.raycaster.intersectObjects([this.screen]);
+
+		let pos = new THREE.Vector2();
+
+		if(intersects.length > 0){
+
+            var point = intersects[0].point;   
+			pos.set( ( point.x + 7.5 ) / 15, (point.y + 7.5 ) / 15 );
+
+		}
+
+
+		let vec = new THREE.Vector2( cursor.delta.x, -cursor.delta.y );
+
+		this.fluidGeometry.setPointer( pos, vec);
 	
 		event.preventDefault();
+
 	}
 
-    onTouchEnd(event:MouseEvent) {
+    onTouchEnd( cursor: ORE.Cursor, event:MouseEvent) {
+
+		this.fluidGeometry.setPointer( new THREE.Vector2( 0, 0 ), new THREE.Vector2( 0, 0 ) );
+
 		
 	}
 }

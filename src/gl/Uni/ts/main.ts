@@ -8,6 +8,7 @@ class APP{
 	private scene: MainScene;
 
 	constructor(){
+		
 		this.canvas = document.querySelector("#canvas");
 
         this.controller = new ORE.Controller({
@@ -15,8 +16,8 @@ class APP{
 			retina: true
 		});
 
-        this.scene = new MainScene(this.controller.renderer);
-		this.controller.setScene(this.scene);
+        this.scene = new MainScene();
+		this.controller.bindScene(this.scene);
 		
 	}
 
