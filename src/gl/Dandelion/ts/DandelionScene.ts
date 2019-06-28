@@ -38,6 +38,8 @@ export class DandelionScene extends ORE.BaseScene{
 	}
 
 	animate(){
+
+		this.dandeilon.update( this.time );
 		
 		this.renderer.render( this.scene, this.camera );
 	
