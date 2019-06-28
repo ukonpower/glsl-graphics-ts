@@ -1,5 +1,6 @@
 uniform vec2 resolution;
 
+uniform sampler2D infoTex;
 uniform sampler2D velocityTex;
 uniform sampler2D positionTex;
 
