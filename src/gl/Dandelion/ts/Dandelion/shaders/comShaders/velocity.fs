@@ -8,6 +8,7 @@ void main( void ){
 	
 	vec2 uv = gl_FragCoord.xy / resolution;
 
+	vec3 info = texture2D( infoTex, uv ).xyz;
 	vec3 pos = texture2D( positionTex, uv ).xyz;
 	vec3 vel = texture2D( velocityTex, uv ).xyz;
 	

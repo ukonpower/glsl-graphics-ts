@@ -24,6 +24,8 @@ export class Dandelion extends THREE.Object3D{
 
 	private renderer: THREE.WebGLRenderer;
 
+	private time: number = 0;
+
 	//gpgpu
 	private gcController: ORE.GPUComputationController;
 	private kernels: Kernels;
@@ -78,15 +80,19 @@ export class Dandelion extends THREE.Object3D{
 		}
 
 		//set compute uniforms
+		this.kernels.info.uniforms.time = { value: 0 };
+		this.kernels.info.uniforms.deltaTime = { value: 0 };
 		this.kernels.info.uniforms.infoTex = { value: this.datas.info.buffer.texture };
 		this.kernels.info.uniforms.positionTex = { value: this.datas.position.buffer.texture };
 		this.kernels.info.uniforms.velocityTex = { value: this.datas.velocity.buffer.texture };
 
+		this.kernels.position.uniforms.time = { value: 0 };
 		this.kernels.position.uniforms.initPositionTex = { value: this.initPositionTex };
 		this.kernels.position.uniforms.infoTex = { value: this.datas.info.buffer.texture };
 		this.kernels.position.uniforms.positionTex = { value: this.datas.position.buffer.texture };
 		this.kernels.position.uniforms.velocityTex = { value: this.datas.velocity.buffer.texture };
 
+		this.kernels.velocity.uniforms.time = { value: 0 };
 		this.kernels.velocity.uniforms.infoTex = { value: this.datas.info.buffer.texture };
 		this.kernels.velocity.uniforms.positionTex = { value: this.datas.position.buffer.texture };
 		this.kernels.velocity.uniforms.velocityTex = { value: this.datas.velocity.buffer.texture };
@@ -170,18 +176,24 @@ export class Dandelion extends THREE.Object3D{
 		return tex;
 	}
 
-	public update( time: number ){
+	public update( deltaTime: number ){
 
+		this.time += deltaTime;
+
+		this.kernels.info.uniforms.time.value = this.time;
+		this.kernels.info.uniforms.deltaTime.value = deltaTime;
 		this.kernels.info.uniforms.velocityTex.value = this.datas.velocity.buffer.texture;
 		this.kernels.info.uniforms.positionTex.value = this.datas.position.buffer.texture;
 		this.kernels.info.uniforms.infoTex.value = this.datas.info.buffer.texture;
 		this.gcController.compute( this.kernels.info, this.datas.info );
 
+		this.kernels.velocity.uniforms.time.value = this.time;
 		this.kernels.velocity.uniforms.velocityTex.value = this.datas.velocity.buffer.texture;
 		this.kernels.velocity.uniforms.positionTex.value = this.datas.position.buffer.texture;
 		this.kernels.velocity.uniforms.infoTex.value = this.datas.info.buffer.texture;
 		this.gcController.compute( this.kernels.velocity, this.datas.velocity );
 
+		this.kernels.position.uniforms.time.value = this.time;
 		this.kernels.position.uniforms.velocityTex.value = this.datas.velocity.buffer.texture;
 		this.kernels.position.uniforms.positionTex.value = this.datas.position.buffer.texture;
 		this.kernels.position.uniforms.infoTex.value = this.datas.info.buffer.texture;

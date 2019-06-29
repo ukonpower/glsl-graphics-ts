@@ -5,12 +5,36 @@ uniform sampler2D velocityTex;
 uniform sampler2D positionTex;
 uniform sampler2D initPositionTex;
 
+uniform float time;
+
+$noise4D
+
+vec3 noise3D( vec3 p, float time ){
+	return vec3( 
+		snoise( vec4( p + vec3( 34.,54.,0.), time)),
+		snoise( vec4( p + vec3( 0.,454.,0.), time)),
+		snoise( vec4( p + vec3( -34.,533.,46.), time))
+		);
+}
+
 void main( void ){
 	
 	vec2 uv = gl_FragCoord.xy / resolution;
 
-	vec3 pos = texture2D( initPositionTex, uv ).xyz;
-	vec3 vel = texture2D( velocityTex, uv ).xyz;
+	vec3 info = texture2D( infoTex, uv ).xyz;
+	vec3 pos;
+
+	if( info.x == 0.0){ //待機
+
+		pos = texture2D( initPositionTex, uv ).xyz;
+
+	}else if ( info.x == 1.0 ){ //空中
+
+		pos = texture2D( positionTex, uv ).xyz;
+
+		pos += noise3D( pos * 0.6 , time * 0.1  ) * 0.05 + vec3( 0.03, 0.0, -0.1 ) * 0.5;
+
+	}
 	
 	gl_FragColor = vec4( pos, 0.0 );
 

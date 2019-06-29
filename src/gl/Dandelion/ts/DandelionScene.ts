@@ -37,9 +37,9 @@ export class DandelionScene extends ORE.BaseScene{
 
 	}
 
-	animate(){
+	animate( deltaTime: number ){
 
-		this.dandeilon.update( this.time );
+		this.dandeilon.update( deltaTime );
 		
 		this.renderer.render( this.scene, this.camera );
 	
