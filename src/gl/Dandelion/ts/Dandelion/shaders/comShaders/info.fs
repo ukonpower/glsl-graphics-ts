@@ -5,6 +5,7 @@ uniform sampler2D velocityTex;
 uniform sampler2D positionTex;
 
 uniform float time;
+uniform float breath;
 uniform float deltaTime;
 
 $noise4D
@@ -25,7 +26,7 @@ void main( void ){
 
 	if( state == 0.0 ){
 
-		pow += snoise( vec4( pos, time ));
+		pow += ( snoise( vec4( pos, time ) ) + 0.1 )  * breath;
 
 		if( pow >= 1.0 ){
 
@@ -37,7 +38,7 @@ void main( void ){
 
 		lifeTime += deltaTime;
 
-		if( lifeTime >= 3.0 ){
+		if( lifeTime >= 5.0 ){
 
 			state = 0.0;
 

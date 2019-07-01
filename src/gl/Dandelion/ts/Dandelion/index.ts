@@ -1,8 +1,10 @@
 import * as THREE from 'three';
 import * as ORE from 'ore-three-ts';
 
-import vert from './shaders/dandelion.vs';
-import frag from './shaders/dandelion.fs';
+import fluffVert from './shaders/dandelion.vs';
+import fluffFrag from './shaders/dandelion.fs';
+
+import kukiVert from './shaders/kuki.vs';
 
 import comshaderInfo from './shaders/comShaders/info.fs';
 import comShaderPosition from './shaders/comShaders/position.fs';
@@ -26,6 +28,8 @@ export class Dandelion extends THREE.Object3D{
 
 	private time: number = 0;
 
+	private breath: number = 0.0;
+
 	//gpgpu
 	private gcController: ORE.GPUComputationController;
 	private kernels: Kernels;
@@ -33,9 +37,14 @@ export class Dandelion extends THREE.Object3D{
 	private initPositionTex: THREE.DataTexture;
 	private computeResolution: THREE.Vector2;
 
-	//mesh
-	private uni: ORE.Uniforms;
+	//fluff mesh
+	private fluffUni: ORE.Uniforms;
 	private num: number;
+
+	//kuki mesh
+	private kukiUni: ORE.Uniforms;
+
+	private fluffPosY: number = 2.5; 
 
 	constructor( renderer: THREE.WebGLRenderer ){
 		
@@ -44,6 +53,7 @@ export class Dandelion extends THREE.Object3D{
 		this.renderer = renderer;
 
 		this.createFluff();
+		this.createKuki();
 
 	}
 
@@ -82,11 +92,14 @@ export class Dandelion extends THREE.Object3D{
 		//set compute uniforms
 		this.kernels.info.uniforms.time = { value: 0 };
 		this.kernels.info.uniforms.deltaTime = { value: 0 };
+		this.kernels.info.uniforms.breath = { value: 0 };
 		this.kernels.info.uniforms.infoTex = { value: this.datas.info.buffer.texture };
 		this.kernels.info.uniforms.positionTex = { value: this.datas.position.buffer.texture };
 		this.kernels.info.uniforms.velocityTex = { value: this.datas.velocity.buffer.texture };
 
 		this.kernels.position.uniforms.time = { value: 0 };
+		this.kernels.position.uniforms.fluffPos = { value: 2.5 };
+		this.kernels.position.uniforms.breath = { value: 0.0 };
 		this.kernels.position.uniforms.initPositionTex = { value: this.initPositionTex };
 		this.kernels.position.uniforms.infoTex = { value: this.datas.info.buffer.texture };
 		this.kernels.position.uniforms.positionTex = { value: this.datas.position.buffer.texture };
@@ -100,7 +113,7 @@ export class Dandelion extends THREE.Object3D{
 		let geo = new THREE.InstancedBufferGeometry();
 		
 		//copy original mesh
-		let fluffMesh = new THREE.BoxBufferGeometry( 0.05, 0.05, 0.05 );
+		let fluffMesh = new THREE.BoxBufferGeometry( 0.01, 0.01, 0.01 );
 
         let vertice = ( fluffMesh.attributes.position as THREE.BufferAttribute).clone();
         geo.addAttribute( 'position', vertice );
@@ -141,21 +154,47 @@ export class Dandelion extends THREE.Object3D{
 			}
         }
 
-        this.uni = THREE.UniformsUtils.merge( [ THREE.ShaderLib.standard.uniforms, cUni ] );
-        this.uni.roughness.value = 0.8;
+        this.fluffUni = THREE.UniformsUtils.merge( [ THREE.ShaderLib.standard.uniforms, cUni ] );
+        this.fluffUni.roughness.value = 0.8;
 
         let mat = new THREE.ShaderMaterial({
-            vertexShader: vert,
-            fragmentShader: frag,
-            uniforms: this.uni,
+            vertexShader: fluffVert,
+            fragmentShader: fluffFrag,
+            uniforms: this.fluffUni,
             flatShading: true,
             lights: true,
             side: THREE.DoubleSide
         })
 
         let fluff = new THREE.Mesh( geo, mat );
+		this.add( fluff );
 
-        this.add( fluff );
+	}
+
+	private createKuki(){
+
+		let cUni = {
+			time: { value: 0.0 },
+			breath:{ value: 0.0 }
+		}
+
+		let baseMat = THREE.ShaderLib.standard;
+
+		this.kukiUni = THREE.UniformsUtils.merge( [ baseMat.uniforms, cUni ] );
+
+		let kukiGeo = new THREE.CylinderGeometry( 0.03, 0.03, 2.5, 5, 30 );
+
+		let kukiMat = new THREE.ShaderMaterial({
+			vertexShader: kukiVert,
+			fragmentShader: baseMat.fragmentShader,
+			uniforms: this.kukiUni,
+			lights: true
+		});
+		
+		let kuki = new THREE.Mesh( kukiGeo, kukiMat );
+		
+		this.add( kuki );
+		
 	}
 
 	private getInitPosition( array: any ): THREE.DataTexture{
@@ -179,9 +218,11 @@ export class Dandelion extends THREE.Object3D{
 	public update( deltaTime: number ){
 
 		this.time += deltaTime;
+		this.breath *= 0.96;
 
 		this.kernels.info.uniforms.time.value = this.time;
 		this.kernels.info.uniforms.deltaTime.value = deltaTime;
+		this.kernels.info.uniforms.breath.value = this.breath;
 		this.kernels.info.uniforms.velocityTex.value = this.datas.velocity.buffer.texture;
 		this.kernels.info.uniforms.positionTex.value = this.datas.position.buffer.texture;
 		this.kernels.info.uniforms.infoTex.value = this.datas.info.buffer.texture;
@@ -194,12 +235,22 @@ export class Dandelion extends THREE.Object3D{
 		this.gcController.compute( this.kernels.velocity, this.datas.velocity );
 
 		this.kernels.position.uniforms.time.value = this.time;
+		this.kernels.position.uniforms.breath.value = this.breath;
 		this.kernels.position.uniforms.velocityTex.value = this.datas.velocity.buffer.texture;
 		this.kernels.position.uniforms.positionTex.value = this.datas.position.buffer.texture;
 		this.kernels.position.uniforms.infoTex.value = this.datas.info.buffer.texture;
 		this.gcController.compute( this.kernels.position, this.datas.position );
 
-		this.uni.positionTex.value = this.datas.position.buffer.texture;
+		this.fluffUni.positionTex.value = this.datas.position.buffer.texture;
+
+		this.kukiUni.time.value = this.time;
+		this.kukiUni.breath.value = this.breath;
+
+	}
+
+	public addBreath( breath: number ){
+
+		this.breath += breath;
 
 	}
 

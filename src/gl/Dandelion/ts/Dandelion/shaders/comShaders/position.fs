@@ -6,8 +6,11 @@ uniform sampler2D positionTex;
 uniform sampler2D initPositionTex;
 
 uniform float time;
+uniform float fluffPos;
+uniform float breath;
 
 $noise4D
+$rotate
 
 vec3 noise3D( vec3 p, float time ){
 	return vec3( 
@@ -27,6 +30,9 @@ void main( void ){
 	if( info.x == 0.0){ //待機
 
 		pos = texture2D( initPositionTex, uv ).xyz;
+		pos.y += fluffPos;
+
+		pos.yz *= rotate( breath );
 
 	}else if ( info.x == 1.0 ){ //空中
 
