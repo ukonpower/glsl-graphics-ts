@@ -49,7 +49,7 @@ export default class MicData{
 
 	private calcVolume( ){
 
-		let sum = 0;			
+		let sum = 0;
 
 		for( let i = 0; i < this.bufferArray.length; i++ ){
 			sum += this.bufferArray[i];

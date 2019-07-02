@@ -113,7 +113,7 @@ export class Dandelion extends THREE.Object3D{
 		let geo = new THREE.InstancedBufferGeometry();
 		
 		//copy original mesh
-		let fluffMesh = new THREE.BoxBufferGeometry( 0.01, 0.01, 0.01 );
+		let fluffMesh = new THREE.BoxBufferGeometry( 0.01, 0.4, 0.01 );
 
         let vertice = ( fluffMesh.attributes.position as THREE.BufferAttribute).clone();
         geo.addAttribute( 'position', vertice );
@@ -130,6 +130,7 @@ export class Dandelion extends THREE.Object3D{
 		
         let n = new THREE.InstancedBufferAttribute( new Float32Array(this.num * 1), 1, false, 1 );
         let computeCoord = new THREE.InstancedBufferAttribute( new Float32Array(this.num * 2), 2, false, 1 );
+        let offsetPos = new THREE.InstancedBufferAttribute( spherePos , 3, false, 1 );
 
         for (let i = 0; i < this.num; i++) {
 			n.setX(i, i);
@@ -138,6 +139,7 @@ export class Dandelion extends THREE.Object3D{
 
         geo.addAttribute('num', n);
         geo.addAttribute('computeCoord', computeCoord);
+        geo.addAttribute('offsetPos', offsetPos);
 
         let cUni = {
             time: {
@@ -245,6 +247,8 @@ export class Dandelion extends THREE.Object3D{
 
 		this.kukiUni.time.value = this.time;
 		this.kukiUni.breath.value = this.breath;
+
+		this.fluffUni.time.value = this.time;
 
 	}
 

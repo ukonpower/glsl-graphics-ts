@@ -13,6 +13,7 @@ varying vec3 vColor;
 
 $rotate
 $constants
+$atan2
 
 void main() {
 
@@ -20,6 +21,12 @@ void main() {
 
 	vec3 wp = texture2D( positionTex, computeUV ).xyz;
 	vec3 vp = position;
+
+	float rotZ = ( 0.5 - ( offsetPos.y )) * PI;
+	float rotY = atan2( offsetPos.x, offsetPos.z );
+
+	vp.xy *= rotate( rotZ );
+	vp.xz *= rotate( rotY - HPI - 0.1 );
 
 
 	vec4 mvPosition = modelViewMatrix * vec4(wp + vp, 1.0);
