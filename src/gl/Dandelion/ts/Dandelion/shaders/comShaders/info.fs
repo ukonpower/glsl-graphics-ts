@@ -26,7 +26,7 @@ void main( void ){
 
 	if( state == 0.0 ){
 
-		pow += ( snoise( vec4( pos, time ) ) + 0.1 )  * breath;
+		pow += ( snoise( vec4( pos, time ) ) + 0.2 )  * smoothstep( 0.4, 1.5, breath);
 
 		if( pow >= 1.0 ){
 

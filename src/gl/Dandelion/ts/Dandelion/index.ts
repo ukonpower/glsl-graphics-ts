@@ -44,8 +44,6 @@ export class Dandelion extends THREE.Object3D{
 	//kuki mesh
 	private kukiUni: ORE.Uniforms;
 
-	private fluffPosY: number = 2.5; 
-
 	constructor( renderer: THREE.WebGLRenderer ){
 		
 		super();
@@ -113,7 +111,7 @@ export class Dandelion extends THREE.Object3D{
 		let geo = new THREE.InstancedBufferGeometry();
 		
 		//copy original mesh
-		let fluffMesh = new THREE.BoxBufferGeometry( 0.01, 0.4, 0.01 );
+		let fluffMesh = new THREE.BoxBufferGeometry( 0.01, 0.3, 0.01, 1, 20 );
 
         let vertice = ( fluffMesh.attributes.position as THREE.BufferAttribute).clone();
         geo.addAttribute( 'position', vertice );
@@ -148,10 +146,16 @@ export class Dandelion extends THREE.Object3D{
             all: {
                 value: this.num
 			},
+			breath: {
+				value: 0
+			},
 			computeResolution: {
 				value: this.computeResolution
 			},
 			positionTex: {
+				value: null
+			},
+			infoTex:{ 
 				value: null
 			}
         }
@@ -177,7 +181,7 @@ export class Dandelion extends THREE.Object3D{
 
 		let cUni = {
 			time: { value: 0.0 },
-			breath:{ value: 0.0 }
+			breath:{ value: 0.0 },
 		}
 
 		let baseMat = THREE.ShaderLib.standard;
@@ -249,6 +253,8 @@ export class Dandelion extends THREE.Object3D{
 		this.kukiUni.breath.value = this.breath;
 
 		this.fluffUni.time.value = this.time;
+		this.fluffUni.breath.value = this.breath;
+		this.fluffUni.infoTex.value = this.datas.info.buffer.texture;
 
 	}
 

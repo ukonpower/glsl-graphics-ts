@@ -14,6 +14,8 @@ export class DandelionScene extends ORE.BaseScene{
 
 	private floor: Floor;
 
+	private breatFinger = 0.0;
+
 	constructor(){
 
 		super();
@@ -44,15 +46,17 @@ export class DandelionScene extends ORE.BaseScene{
 		this.scene.add( this.dandeilon );
 
 		this.floor = new Floor();
-		this.scene.add( this.floor );
+		// this.scene.add( this.floor );
 
 	}
 
 	animate( deltaTime: number ){
 
+		this.breatFinger *= 0.97;
+
 		this.dandeilon.update( deltaTime );
 
-		this.dandeilon.addBreath( this.micData.volume * 0.001);
+		this.dandeilon.addBreath( this.micData.volume * 0.0000 + this.breatFinger);
 		
 		this.renderer.render( this.scene, this.camera );
 	
@@ -70,7 +74,7 @@ export class DandelionScene extends ORE.BaseScene{
 
     onTouchMove( cursor: ORE.Cursor, event: MouseEvent ) {
 
-		this.dandeilon.addBreath( cursor.delta.y * -0.001 );
+		this.breatFinger += cursor.delta.y * -0.0001;
 
 	}
 
