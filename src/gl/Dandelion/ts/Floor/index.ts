@@ -15,59 +15,38 @@ export default class Floor extends THREE.Object3D{
 
         super();
 
-        this.shapes = 70;
-        this.loop = 30;
-        this.space = 0.3;
+        // let geo = new THREE.PlaneGeometry( 100.0, 100.0, 10, 10 );        
 
-        this.createGeo();
+        // let cUni = {
+        //     time: { value: 0 }
+        // }
 
-    }
-
-    createGeo(){
-
-        let geo = new THREE.BufferGeometry();
+        // this.uni = THREE.UniformsUtils.merge( [ THREE.ShaderLib.standard.uniforms, cUni ] );
         
-        let posArray = [];
+        // let mat = new THREE.ShaderMaterial({
+        //     vertexShader: vert,
+        //     fragmentShader: frag,
+        //     uniforms: this.uni,
+        //     lights: true,
+        //     flatShading: true,
+        //     fog: true
+        // });
         
-        for( let i = 0; i < this.loop; i++ ){
-        
-            for( let j = 0; j < i * 5 + 1; j++ ){
-        
-                let rad = Math.PI * 2 / (i * 5 + 1) * j;
+        // this.uni.roughness.value = 0.8;
 
-                let x = Math.cos(rad) * this.space * i;
-                let y = 0;
-                let z = Math.sin(rad) * this.space * i;
-                
-                posArray.push(x);
-                posArray.push(y);
-                posArray.push(z);
-            
-            }
-        
-        }
+        // this.add( new THREE.Mesh( geo, mat ) );
 
-        let pos = new Float32Array(posArray);
+        let geo = new THREE.CylinderGeometry( 1, 1, 0.2, 30);
+        let mat = new THREE.MeshStandardMaterial();
+        let mesh = new THREE.Mesh( geo, mat );
 
-        geo.addAttribute('position', new THREE.BufferAttribute( pos, 3 ) );
+        this.add( mesh );
 
-        this.uni = {
-            time: { value: 0 }
-        }
-        
-        let mat = new THREE.ShaderMaterial({
-            vertexShader: vert,
-            fragmentShader: frag,
-            uniforms: this.uni,
-        });
-        
-        this.add( new THREE.Points( geo, mat ) );
-    
     }
 
     update( time: number ){
 
-        this.uni.time.value = time;
+        // this.uni.time.value = time;
     
     }
 }

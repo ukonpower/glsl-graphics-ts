@@ -14,6 +14,8 @@ export class DandelionScene extends ORE.BaseScene{
 
 	private floor: Floor;
 
+	private bloom: ORE.BloomFilter;
+
 	private breatFinger = 0.0;
 
 	constructor(){
@@ -30,6 +32,8 @@ export class DandelionScene extends ORE.BaseScene{
 
 		this.renderer = this.gProps.renderer;
 
+		// this.scene.background = new THREE.Color( 0xffffff );
+		// this.scene.fog = new THREE.Fog( 0xffffff, 3, 20);
 		this.micData = new MicData( window.navigator, 256 );
 		
 		this.camera.position.set( 2, 4 ,5 );
@@ -46,7 +50,12 @@ export class DandelionScene extends ORE.BaseScene{
 		this.scene.add( this.dandeilon );
 
 		this.floor = new Floor();
-		// this.scene.add( this.floor );
+		this.floor.position.y = -0.1;
+		this.scene.add( this.floor );
+
+		this.bloom = new ORE.BloomFilter( this.renderer );
+		this.bloom.threshold = 0.1;
+		this.bloom.brightness = 1.0;		
 
 	}
 
@@ -57,7 +66,10 @@ export class DandelionScene extends ORE.BaseScene{
 		this.dandeilon.update( deltaTime );
 
 		this.dandeilon.addBreath( this.micData.volume * 0.0000 + this.breatFinger);
+
+		this.floor.update( this.time );
 		
+		// this.bloom.render( this.scene, this.camera );
 		this.renderer.render( this.scene, this.camera );
 	
 	}
@@ -65,6 +77,8 @@ export class DandelionScene extends ORE.BaseScene{
 	onResize( width: number, height: number ) {
 	
 		super.onResize( width, height );
+
+		this.bloom.resize( this.width, this.height );
 	
 	}
 

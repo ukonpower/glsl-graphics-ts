@@ -1,19 +1,30 @@
 uniform float time;
 varying vec3 vColor;
+varying vec3 vViewPosition;
+
+$rotate
+$constants
+$noise2D
+
+#include <fog_pars_vertex>
 
 void main() {
-    vec3 p = position;
+    vec3 vp = position;
 
-    vec3 c = vec3(1.0);
-    float l = length(p);
-    c *= 1.0 - min(l * 0.07,1.0);
-    c *= sin(l * 0.6 - time * 2.0) + 0.1;
-    c = abs(c);
-    vColor = vec3(c);
+    vp.yz *= rotate( HPI );
 
-    vec4 mvPosition = modelViewMatrix * vec4(p, 1.0);
+    // vp.y -= smoothstep( 0.9, 1.0, length( vp.xz ) * 0.4) * 1.0;
+
+    vp.y += snoise( vec2( vp.xz )) * 0.2;
+
+    vec4 mvPosition = modelViewMatrix * vec4( vp, 1.0 );
     gl_Position = projectionMatrix * mvPosition;
-    gl_PointSize = 3.0;
+    vViewPosition = -mvPosition.xyz;
+
+    vColor = vec3( 0.2, 0.4, 0.0 );
+
+    #include <fog_vertex>
+
 }
 
 

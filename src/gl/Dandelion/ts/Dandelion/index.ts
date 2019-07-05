@@ -5,6 +5,7 @@ import fluffVert from './shaders/dandelion.vs';
 import fluffFrag from './shaders/dandelion.fs';
 
 import kukiVert from './shaders/kuki.vs';
+import leafVert from './shaders/leaf.vs';
 
 import comshaderInfo from './shaders/comShaders/info.fs';
 import comShaderPosition from './shaders/comShaders/position.fs';
@@ -43,6 +44,7 @@ export class Dandelion extends THREE.Object3D{
 
 	//kuki mesh
 	private kukiUni: ORE.Uniforms;
+	private leafUni: ORE.Uniforms;
 
 	constructor( renderer: THREE.WebGLRenderer ){
 		
@@ -52,6 +54,7 @@ export class Dandelion extends THREE.Object3D{
 
 		this.createFluff();
 		this.createKuki();
+		this.createLeaf();
 
 	}
 
@@ -111,7 +114,7 @@ export class Dandelion extends THREE.Object3D{
 		let geo = new THREE.InstancedBufferGeometry();
 		
 		//copy original mesh
-		let fluffMesh = new THREE.BoxBufferGeometry( 0.01, 0.3, 0.01, 1, 20 );
+		let fluffMesh = new THREE.BoxBufferGeometry( 0.01, 0.2, 0.01, 1, 20 );
 
         let vertice = ( fluffMesh.attributes.position as THREE.BufferAttribute).clone();
         geo.addAttribute( 'position', vertice );
@@ -201,6 +204,31 @@ export class Dandelion extends THREE.Object3D{
 		
 		this.add( kuki );
 		
+	}
+
+	private createLeaf(){
+
+		let cUni = {
+			time: { value: 0.0 },
+			breath:{ value: 0.0 },
+		}
+
+		let baseMat = THREE.ShaderLib.standard;
+
+		this.leafUni = THREE.UniformsUtils.merge( [ baseMat.uniforms, cUni ] );
+
+		let geo = new THREE.PlaneGeometry( 2, 1, 12, 2 );
+		let mat = new THREE.ShaderMaterial({
+			vertexShader: leafVert,
+			fragmentShader: baseMat.fragmentShader,
+			uniforms: this.leafUni,
+			lights: true,
+		});
+
+		let leaf = new THREE.Mesh( geo, mat );
+
+		this.add( leaf );
+
 	}
 
 	private getInitPosition( array: any ): THREE.DataTexture{
