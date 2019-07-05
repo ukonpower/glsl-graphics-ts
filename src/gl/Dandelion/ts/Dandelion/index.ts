@@ -199,6 +199,8 @@ export class Dandelion extends THREE.Object3D{
 			uniforms: this.kukiUni,
 			lights: true
 		});
+
+		this.kukiUni.diffuse.value = new THREE.Color( 0xbaba6e );
 		
 		let kuki = new THREE.Mesh( kukiGeo, kukiMat );
 		
@@ -226,6 +228,8 @@ export class Dandelion extends THREE.Object3D{
 			flatShading: true,
 			side: THREE.DoubleSide
 		});
+
+		this.leafUni.diffuse.value = new THREE.Color( 0x8FBD2D );
 
 		let leaf = new THREE.Mesh( geo, mat );
 

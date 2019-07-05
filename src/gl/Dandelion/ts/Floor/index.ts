@@ -37,7 +37,9 @@ export default class Floor extends THREE.Object3D{
         // this.add( new THREE.Mesh( geo, mat ) );
 
         let geo = new THREE.CylinderGeometry( 1, 1, 0.2, 30);
-        let mat = new THREE.MeshStandardMaterial();
+        let mat = new THREE.MeshStandardMaterial({
+            color: new THREE.Color( 0x332222 )
+        });
         let mesh = new THREE.Mesh( geo, mat );
 
         this.add( mesh );

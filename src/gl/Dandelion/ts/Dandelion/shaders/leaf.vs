@@ -15,7 +15,7 @@ void main() {
 
 	float lenX = length( pos.x );
 	pos.z *= (sin( lenX * PI )) * 0.7 * ( 1.5 - abs( sin( lenX * PI * 3.0 )) * 0.8);
-	pos.y += sin( lenX * HPI ) + sin( lenX * 2.0 - time ) * 0.2 * lenX -  ( sin(length( pos.z ) * 0.3));
+	pos.y += sin( lenX * HPI ) + sin( lenX * 3.0 - time ) * 0.3 * lenX -  ( sin(length( pos.z ) * 0.3));
 	
 	pos.x *= 1.5;
 

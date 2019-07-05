@@ -3,6 +3,7 @@ import * as THREE from 'three';
 import { Dandelion } from './Dandelion';
 import Floor from './Floor';
 import MicData from './MicData';
+import Background from './Background';
 
 export class DandelionScene extends ORE.BaseScene{
 
@@ -17,6 +18,8 @@ export class DandelionScene extends ORE.BaseScene{
 	private bloom: ORE.BloomFilter;
 
 	private breatFinger = 0.0;
+
+	private background: Background;
 
 	constructor(){
 
@@ -58,8 +61,12 @@ export class DandelionScene extends ORE.BaseScene{
 		this.scene.add( this.floor );
 
 		this.bloom = new ORE.BloomFilter( this.renderer );
-		this.bloom.threshold = 0.1;
-		this.bloom.brightness = 1.0;		
+		this.bloom.threshold = 0.8;
+		this.bloom.renderCount = 3;
+		this.bloom.brightness = 1.0;
+
+		this.background = new Background();
+		this.scene.add( this.background );
 
 	}
 
@@ -73,10 +80,12 @@ export class DandelionScene extends ORE.BaseScene{
 
 		this.floor.update( this.time );
 
-		this.dandeilon.rotateY( 0.01 );
+		this.background.update( this.time );
+
+		// this.dandeilon.rotateY( 0.01 );
 		
-		// this.bloom.render( this.scene, this.camera );
-		this.renderer.render( this.scene, this.camera );
+		this.bloom.render( this.scene, this.camera );
+		// this.renderer.render( this.scene, this.camera );
 	
 	}
 
