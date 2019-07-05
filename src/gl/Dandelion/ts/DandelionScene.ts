@@ -41,10 +41,14 @@ export class DandelionScene extends ORE.BaseScene{
 		
         let light = new THREE.DirectionalLight();
         light.position.y = 10;
+        // light.position.z = 10;
 		this.scene.add( light );
 
 		let alight = new THREE.AmbientLight();
 		this.scene.add( alight );
+
+		// let plight = new THREE.PointLight();
+		// this.scene.add( plight );
 
 		this.dandeilon = new Dandelion( this.renderer );
 		this.scene.add( this.dandeilon );
@@ -65,9 +69,11 @@ export class DandelionScene extends ORE.BaseScene{
 
 		this.dandeilon.update( deltaTime );
 
-		this.dandeilon.addBreath( this.micData.volume * 0.0000 + this.breatFinger);
+		this.dandeilon.addBreath( this.micData.volume * 0.0005 + this.breatFinger);
 
 		this.floor.update( this.time );
+
+		this.dandeilon.rotateY( 0.01 );
 		
 		// this.bloom.render( this.scene, this.camera );
 		this.renderer.render( this.scene, this.camera );

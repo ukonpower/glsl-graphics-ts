@@ -13,9 +13,11 @@ void main() {
 
 	pos.yz *= rotate( HPI );
 
-	pos.z *= sin( length( pos.x ) * PI ) + (sin( length( pos.x ) * PI * 4.0)) * 0.5;
-	pos.y += sin( length( pos.x ) * 2.0 ) * ( 1.0 - length( pos.z ));
-	pos.x *= 2.;
+	float lenX = length( pos.x );
+	pos.z *= (sin( lenX * PI )) * 0.7 * ( 1.5 - abs( sin( lenX * PI * 3.0 )) * 0.8);
+	pos.y += sin( lenX * HPI ) + sin( lenX * 2.0 - time ) * 0.2 * lenX -  ( sin(length( pos.z ) * 0.3));
+	
+	pos.x *= 1.5;
 
 	vec4 mvPosition = modelViewMatrix * vec4( pos, 1.0 );
 	

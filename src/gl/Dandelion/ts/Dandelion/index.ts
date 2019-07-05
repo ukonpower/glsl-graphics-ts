@@ -217,12 +217,14 @@ export class Dandelion extends THREE.Object3D{
 
 		this.leafUni = THREE.UniformsUtils.merge( [ baseMat.uniforms, cUni ] );
 
-		let geo = new THREE.PlaneGeometry( 2, 1, 12, 2 );
+		let geo = new THREE.PlaneGeometry( 2, 1, 24, 2 );
 		let mat = new THREE.ShaderMaterial({
 			vertexShader: leafVert,
 			fragmentShader: baseMat.fragmentShader,
 			uniforms: this.leafUni,
 			lights: true,
+			flatShading: true,
+			side: THREE.DoubleSide
 		});
 
 		let leaf = new THREE.Mesh( geo, mat );
@@ -277,12 +279,14 @@ export class Dandelion extends THREE.Object3D{
 
 		this.fluffUni.positionTex.value = this.datas.position.buffer.texture;
 
-		this.kukiUni.time.value = this.time;
-		this.kukiUni.breath.value = this.breath;
-
 		this.fluffUni.time.value = this.time;
 		this.fluffUni.breath.value = this.breath;
 		this.fluffUni.infoTex.value = this.datas.info.buffer.texture;
+
+		this.kukiUni.time.value = this.time;
+		this.kukiUni.breath.value = this.breath;
+
+		this.leafUni.time.value = this.time;
 
 	}
 
