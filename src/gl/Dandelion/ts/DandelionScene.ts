@@ -4,6 +4,7 @@ import { Dandelion } from './Dandelion';
 import Floor from './Floor';
 import MicData from './MicData';
 import Background from './Background';
+import NoisePostProcessing from './NoisePostProcessing';
 
 export class DandelionScene extends ORE.BaseScene{
 
@@ -20,6 +21,8 @@ export class DandelionScene extends ORE.BaseScene{
 	private breatFinger = 0.0;
 
 	private background: Background;
+
+	private noisePP: NoisePostProcessing;
 
 	constructor(){
 
@@ -44,14 +47,10 @@ export class DandelionScene extends ORE.BaseScene{
 		
         let light = new THREE.DirectionalLight();
         light.position.y = 10;
-        // light.position.z = 10;
 		this.scene.add( light );
 
 		let alight = new THREE.AmbientLight();
 		this.scene.add( alight );
-
-		// let plight = new THREE.PointLight();
-		// this.scene.add( plight );
 
 		this.dandeilon = new Dandelion( this.renderer );
 		this.scene.add( this.dandeilon );
@@ -68,6 +67,8 @@ export class DandelionScene extends ORE.BaseScene{
 		this.background = new Background();
 		this.scene.add( this.background );
 
+		this.noisePP = new NoisePostProcessing( this.renderer );
+
 	}
 
 	animate( deltaTime: number ){
@@ -76,7 +77,7 @@ export class DandelionScene extends ORE.BaseScene{
 
 		this.dandeilon.update( deltaTime );
 
-		this.dandeilon.addBreath( this.micData.volume * 0.0005 + this.breatFinger);
+		this.dandeilon.addBreath( this.micData.volume * 0.001 + this.breatFinger);
 
 		this.floor.update( this.time );
 
@@ -84,14 +85,19 @@ export class DandelionScene extends ORE.BaseScene{
 
 		// this.dandeilon.rotateY( 0.01 );
 		
-		this.bloom.render( this.scene, this.camera );
+		// this.bloom.render( this.scene, this.camera );
 		// this.renderer.render( this.scene, this.camera );
+
+		this.noisePP.update( this.time );
+		this.noisePP.render( this.scene, this.camera );
 	
 	}
 
 	onResize( width: number, height: number ) {
 	
 		super.onResize( width, height );
+
+		this.noisePP.resize( this.width, this.height );
 
 		this.bloom.resize( this.width, this.height );
 	

@@ -17,12 +17,12 @@ export default class Background extends THREE.Object3D{
 		}
 
 		this.bg = new ORE.Background( bgFrag, this.uni );
-		
+
 		this.add( this.bg );
 
 	}
 
-	private update( time: number ){
+	public update( time: number ){
 
 		this.uni.time.value = time;
 

@@ -14,7 +14,7 @@ $rotate
 
 vec3 noise3D( vec3 p, float time ){
 	return vec3( 
-		snoise( vec4( p + vec3( 34.,54.,0.), time)),
+		snoise( vec4( p + vec3( 34.,54.,0.) + gl_FragCoord.x, time)),
 		snoise( vec4( p + vec3( 0.,454.,0.), time)),
 		snoise( vec4( p + vec3( -34.,533.,46.), time))
 		);

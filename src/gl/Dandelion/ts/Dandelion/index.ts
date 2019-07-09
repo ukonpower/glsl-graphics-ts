@@ -6,6 +6,7 @@ import fluffFrag from './shaders/dandelion.fs';
 
 import kukiVert from './shaders/kuki.vs';
 import leafVert from './shaders/leaf.vs';
+import leafFrag from './shaders/leaf.fs';
 
 import comshaderInfo from './shaders/comShaders/info.fs';
 import comShaderPosition from './shaders/comShaders/position.fs';
@@ -222,14 +223,14 @@ export class Dandelion extends THREE.Object3D{
 		let geo = new THREE.PlaneGeometry( 2, 1, 24, 2 );
 		let mat = new THREE.ShaderMaterial({
 			vertexShader: leafVert,
-			fragmentShader: baseMat.fragmentShader,
+			fragmentShader: leafFrag,
 			uniforms: this.leafUni,
 			lights: true,
 			flatShading: true,
 			side: THREE.DoubleSide
 		});
 
-		this.leafUni.diffuse.value = new THREE.Color( 0x8FBD2D );
+		// this.leafUni.diffuse.value = new THREE.Color( 0x8FBD2D );
 
 		let leaf = new THREE.Mesh( geo, mat );
 
