@@ -69,7 +69,7 @@ export class Dandelion extends THREE.Object3D{
 		let spherePos = sphere.attributes.position.array;
 		
 		this.initPositionTex = this.getInitPosition( spherePos );
-		this.num = spherePos.length;
+		this.num = spherePos.length / 3;
 
 		//いい感じの解像度求めるくん
 		// for( let i = 0; i < 1000; i++ ){
@@ -129,7 +129,6 @@ export class Dandelion extends THREE.Object3D{
         let indices = fluffMesh.index.clone();
 		geo.setIndex( indices );
 
-		
         let n = new THREE.InstancedBufferAttribute( new Float32Array(this.num * 1), 1, false, 1 );
         let computeCoord = new THREE.InstancedBufferAttribute( new Float32Array(this.num * 2), 2, false, 1 );
         let offsetPos = new THREE.InstancedBufferAttribute( spherePos , 3, false, 1 );
