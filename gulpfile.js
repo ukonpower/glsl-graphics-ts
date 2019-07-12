@@ -80,9 +80,10 @@ gulp.task('browser-sync', function(){
     browserSync.init({
         server: {
             baseDir: "public/",
-            index: "index.html"
+            index: "index.html",
         },
         startPath: './gl/',
+        https: true
     });
 });
 

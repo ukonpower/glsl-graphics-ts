@@ -7,6 +7,7 @@ import fluffFrag from './shaders/dandelion.fs';
 import kukiVert from './shaders/kuki.vs';
 import leafVert from './shaders/leaf.vs';
 import leafFrag from './shaders/leaf.fs';
+import tubomiVert from './shaders/kappa.vs';
 
 import comshaderInfo from './shaders/comShaders/info.fs';
 import comShaderPosition from './shaders/comShaders/position.fs';
@@ -43,9 +44,9 @@ export class Dandelion extends THREE.Object3D{
 	private fluffUni: ORE.Uniforms;
 	private num: number;
 
-	//kuki mesh
 	private kukiUni: ORE.Uniforms;
 	private leafUni: ORE.Uniforms;
+	private tubomiUni: ORE.Uniforms;
 
 	constructor( renderer: THREE.WebGLRenderer ){
 		
@@ -56,6 +57,7 @@ export class Dandelion extends THREE.Object3D{
 		this.createFluff();
 		this.createKuki();
 		this.createLeaf();
+		this.tubomi();
 
 	}
 
@@ -74,7 +76,7 @@ export class Dandelion extends THREE.Object3D{
 		//いい感じの解像度求めるくん
 		// for( let i = 0; i < 1000; i++ ){
 		// 	if( this.num / 3 / i - Math.floor( this.num / 3 / i) == 0 ){
-		// 		console.log(i);
+		// 		console.log(i, this.num / 3 / i);
 		// 	}
 		// }
 
@@ -173,10 +175,13 @@ export class Dandelion extends THREE.Object3D{
             uniforms: this.fluffUni,
             flatShading: true,
             lights: true,
-            side: THREE.DoubleSide
-        })
+			side: THREE.DoubleSide,
+			transparent: true,
+			blending: THREE.NormalBlending
+		})
 
-        let fluff = new THREE.Mesh( geo, mat );
+		let fluff = new THREE.Mesh( geo, mat );
+		fluff.renderOrder = 20;
 		this.add( fluff );
 
 	}
@@ -196,17 +201,46 @@ export class Dandelion extends THREE.Object3D{
 
 		let kukiMat = new THREE.ShaderMaterial({
 			vertexShader: kukiVert,
-			fragmentShader: baseMat.fragmentShader,
+			fragmentShader: leafFrag,
 			uniforms: this.kukiUni,
 			lights: true
 		});
 
-		this.kukiUni.diffuse.value = new THREE.Color( 0xbaba6e );
+		this.kukiUni.diffuse.value = new THREE.Color( 0xffffff );
 		
 		let kuki = new THREE.Mesh( kukiGeo, kukiMat );
 		
 		this.add( kuki );
 		
+	}
+
+	private tubomi(){
+
+		let cUni = {
+			time: { value: 0.0 },
+			breath:{ value: 0.0 },
+		}
+
+		let baseMat = THREE.ShaderLib.standard;
+
+		this.tubomiUni = THREE.UniformsUtils.merge( [ baseMat.uniforms, cUni ] );
+
+		let geo = new THREE.SphereBufferGeometry( 0.15, 10, 10 );
+		let mat = new THREE.ShaderMaterial({
+			vertexShader: tubomiVert,
+			fragmentShader: leafFrag,
+			uniforms: this.tubomiUni,
+			lights: true,
+			flatShading: true,
+			side: THREE.DoubleSide
+		});
+
+		// this.leafUni.diffuse.value = new THREE.Color( 0x8FBD2D );
+
+		let leaf = new THREE.Mesh( geo, mat );
+
+		this.add( leaf );
+
 	}
 
 	private createLeaf(){
@@ -292,6 +326,9 @@ export class Dandelion extends THREE.Object3D{
 		this.kukiUni.breath.value = this.breath;
 
 		this.leafUni.time.value = this.time;
+
+		this.tubomiUni.time.value = this.time;
+		this.tubomiUni.breath.value = this.breath;
 
 	}
 

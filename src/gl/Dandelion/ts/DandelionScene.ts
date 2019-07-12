@@ -46,10 +46,12 @@ export class DandelionScene extends ORE.BaseScene{
 		this.camera.lookAt( 0, 1.5, 0 );
 		
         let light = new THREE.DirectionalLight();
-        light.position.y = 10;
+		light.position.y = 1;
+		light.position.y = 3;
 		this.scene.add( light );
 
 		let alight = new THREE.AmbientLight();
+		alight.intensity = 0.8;
 		this.scene.add( alight );
 
 		this.dandeilon = new Dandelion( this.renderer );

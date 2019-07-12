@@ -27,5 +27,8 @@ void main() {
 	vViewPosition = -mvPosition.xyz;
 	vNormal = normal;
 
-	vColor = vec3(1.0);
+	float w = length( pos ) * 0.4;
+	vec3 c = vec3( 1.0 ) * w;
+
+	vColor = vec3(c);
 }

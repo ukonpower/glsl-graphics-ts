@@ -23,6 +23,8 @@ void main( void ){
 	float state = info.x;
 	float lifeTime = info.y;
 	float pow = info.z;
+	float allTime = info.w;
+	allTime += deltaTime;
 
 	if( state == 0.0 ){
 
@@ -46,11 +48,13 @@ void main( void ){
 
 			lifeTime = 0.0;
 
+			allTime = 0.0;
+
 		}
 
 	}
 
 	
-	gl_FragColor = vec4( state, lifeTime, pow, 0.0 );
+	gl_FragColor = vec4( state, lifeTime, pow, allTime );
 
 }

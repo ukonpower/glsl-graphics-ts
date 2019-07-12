@@ -11,9 +11,10 @@ $constants
 void main() {
 
 	vec3 pos = position;
-	pos.y += 1.25;
 
-	pos.yz *= rotate( breath * ( pos.y / 2.5 ) );
+	pos.y += 2.5;
+
+	pos.yz *= rotate( breath );
 
 	vec4 mvPosition = modelViewMatrix * vec4( pos, 1.0 );
 	
@@ -22,10 +23,5 @@ void main() {
 	vViewPosition = -mvPosition.xyz;
 	vNormal = normal;
 
-
-	float w = length( pos ) * 0.4;
-	vec3 c = vec3( 1.0) * w;
-
-	vColor = vec3(c);
-
+	vColor = vec3(1.0);
 }

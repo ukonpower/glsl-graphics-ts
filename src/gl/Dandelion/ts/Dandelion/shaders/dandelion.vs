@@ -11,7 +11,7 @@ uniform sampler2D infoTex;
 uniform sampler2D positionTex;
 
 varying vec3 vViewPosition;
-varying vec3 vColor;
+varying vec4 vColor;
 
 $rotate
 $constants
@@ -42,6 +42,6 @@ void main() {
 	
 	vViewPosition = -mvPosition.xyz;
 
-	vColor = vec3( 1.0 );
+	vColor = vec4( 1.0, 1.0, 1.0, info.w );
 
 }

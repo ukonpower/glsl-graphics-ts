@@ -1,5 +1,5 @@
 #define PHYSICAL
-varying vec3 vColor;
+varying vec4 vColor;
 uniform vec3 emissive;
 uniform float roughness;
 uniform float metalness;
@@ -39,7 +39,7 @@ varying vec3 vViewPosition;
 #include <clipping_planes_pars_fragment>
 void main() {
 	#include <clipping_planes_fragment>
-	vec4 diffuseColor = vec4( vColor, opacity );
+	vec4 diffuseColor = vColor;
 	ReflectedLight reflectedLight = ReflectedLight( vec3( 0.0 ), vec3( 0.0 ), vec3( 0.0 ), vec3( 0.0 ) );
 	vec3 totalEmissiveRadiance = emissive;
 	#include <logdepthbuf_fragment>
