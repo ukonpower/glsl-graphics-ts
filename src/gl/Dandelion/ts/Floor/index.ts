@@ -15,30 +15,9 @@ export default class Floor extends THREE.Object3D{
 
         super();
 
-        // let geo = new THREE.PlaneGeometry( 100.0, 100.0, 10, 10 );        
-
-        // let cUni = {
-        //     time: { value: 0 }
-        // }
-
-        // this.uni = THREE.UniformsUtils.merge( [ THREE.ShaderLib.standard.uniforms, cUni ] );
-        
-        // let mat = new THREE.ShaderMaterial({
-        //     vertexShader: vert,
-        //     fragmentShader: frag,
-        //     uniforms: this.uni,
-        //     lights: true,
-        //     flatShading: true,
-        //     fog: true
-        // });
-        
-        // this.uni.roughness.value = 0.8;
-
-        // this.add( new THREE.Mesh( geo, mat ) );
-
         let geo = new THREE.CylinderGeometry( 1, 1, 0.2, 30);
         let mat = new THREE.MeshStandardMaterial({
-            color: new THREE.Color( 0x332222 )
+            color: new THREE.Color( 0xFFFFFF )
         });
         let mesh = new THREE.Mesh( geo, mat );
 

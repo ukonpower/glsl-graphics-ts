@@ -31,10 +31,9 @@ void main() {
 
 	float rotW = max( 0.0, 1.0 - info.y * 0.5 );
 	vp.xy *= rotate( rotZ * rotW );
-	vp.xz *= rotate( ( rotY - HPI - 0.1 ) * rotW );
+	vp.xz *= rotate( ( rotY ) * rotW );
 
 	vp.yz *= rotate( breath * (breath + 0.3) * sin( time * 20.0 - vp.y * 20.0) * 0.3 );
-
 
 	vec4 mvPosition = modelViewMatrix * vec4(wp + vp, 1.0);
 	
@@ -42,6 +41,10 @@ void main() {
 	
 	vViewPosition = -mvPosition.xyz;
 
-	vColor = vec4( 1.0, 1.0, 1.0, info.w );
+	vec3 c = vec3( 1.0 );
+
+	// c.x = sin( info.y + computeUV.y * 5.0 );
+
+	vColor = vec4( c, info.w );
 
 }

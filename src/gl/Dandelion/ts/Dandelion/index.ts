@@ -7,22 +7,23 @@ import fluffFrag from './shaders/dandelion.fs';
 import kukiVert from './shaders/kuki.vs';
 import leafVert from './shaders/leaf.vs';
 import leafFrag from './shaders/leaf.fs';
-import tubomiVert from './shaders/kappa.vs';
+import tubomiVert from './shaders/tubomi.vs';
 
 import comshaderInfo from './shaders/comShaders/info.fs';
 import comShaderPosition from './shaders/comShaders/position.fs';
 import comShaderVelocity from './shaders/comShaders/velocity.fs';
+import { GPUComputationController, GPUComputationKernel, GPUcomputationData } from '../GPUComputationController';
 
 declare interface Kernels{
-	info: ORE.GPUComputationKernel
-	position: ORE.GPUComputationKernel;
-	velocity: ORE.GPUComputationKernel;
+	info: GPUComputationKernel
+	position: GPUComputationKernel;
+	velocity: GPUComputationKernel;
 }
 
 declare interface Datas{
-	position: ORE.GPUcomputationData;
-	velocity: ORE.GPUcomputationData;
-	info: ORE.GPUcomputationData;
+	position: GPUcomputationData;
+	velocity: GPUcomputationData;
+	info: GPUcomputationData;
 }
 
 export class Dandelion extends THREE.Object3D{
@@ -34,7 +35,7 @@ export class Dandelion extends THREE.Object3D{
 	private breath: number = 0.0;
 
 	//gpgpu
-	private gcController: ORE.GPUComputationController;
+	private gcController: GPUComputationController;
 	private kernels: Kernels;
 	private datas: Datas;
 	private initPositionTex: THREE.DataTexture;
@@ -57,28 +58,29 @@ export class Dandelion extends THREE.Object3D{
 		this.createFluff();
 		this.createKuki();
 		this.createLeaf();
-		this.tubomi();
+		this.createTubomi();
 
 	}
 
 	private createFluff(){
 
-		this.computeResolution = new THREE.Vector2( 41, 31 );
-		this.gcController = new ORE.GPUComputationController( this.renderer, this.computeResolution );
+		this.computeResolution = new THREE.Vector2( 31, 41 );
+		this.gcController = new GPUComputationController( this.renderer, this.computeResolution );
 		
 		//position
 		let sphere = new THREE.SphereBufferGeometry( 0.5, 40, 30 );
+		// let sphere = new THREE.BoxBufferGeometry( 1, 1 );
 		let spherePos = sphere.attributes.position.array;
 		
 		this.initPositionTex = this.getInitPosition( spherePos );
 		this.num = spherePos.length / 3;
 
-		//いい感じの解像度求めるくん
-		// for( let i = 0; i < 1000; i++ ){
-		// 	if( this.num / 3 / i - Math.floor( this.num / 3 / i) == 0 ){
-		// 		console.log(i, this.num / 3 / i);
-		// 	}
-		// }
+		// いい感じの解像度求めるくん
+		for( let i = 0; i < 1000; i++ ){
+			if( this.num / i - Math.floor( this.num / i) == 0 ){
+				console.log(i, this.num / i);
+			}
+		}
 
 		//kernels & datas
 		this.kernels = {
@@ -88,9 +90,20 @@ export class Dandelion extends THREE.Object3D{
 		}
 
 		this.datas = {
-			info: this.gcController.createData(),
-			position: this.gcController.createData( this.initPositionTex ),
-			velocity: this.gcController.createData()
+			info: this.gcController.createData({
+				minFilter: THREE.NearestFilter,
+				magFilter: THREE.NearestFilter
+			}),
+			
+			position: this.gcController.createData( this.initPositionTex, {
+				minFilter: THREE.NearestFilter,
+				magFilter: THREE.NearestFilter
+			}),
+			
+			velocity: this.gcController.createData({
+				minFilter: THREE.NearestFilter,
+				magFilter: THREE.NearestFilter
+			})
 		}
 
 		//set compute uniforms
@@ -213,7 +226,7 @@ export class Dandelion extends THREE.Object3D{
 		
 	}
 
-	private tubomi(){
+	private createTubomi(){
 
 		let cUni = {
 			time: { value: 0.0 },
@@ -224,7 +237,7 @@ export class Dandelion extends THREE.Object3D{
 
 		this.tubomiUni = THREE.UniformsUtils.merge( [ baseMat.uniforms, cUni ] );
 
-		let geo = new THREE.SphereBufferGeometry( 0.15, 10, 10 );
+		let geo = new THREE.SphereGeometry( 0.15, 10, 10 );
 		let mat = new THREE.ShaderMaterial({
 			vertexShader: tubomiVert,
 			fragmentShader: leafFrag,
@@ -236,9 +249,9 @@ export class Dandelion extends THREE.Object3D{
 
 		// this.leafUni.diffuse.value = new THREE.Color( 0x8FBD2D );
 
-		let leaf = new THREE.Mesh( geo, mat );
+		let tubomi = new THREE.Mesh( geo, mat );
 
-		this.add( leaf );
+		this.add( tubomi );
 
 	}
 

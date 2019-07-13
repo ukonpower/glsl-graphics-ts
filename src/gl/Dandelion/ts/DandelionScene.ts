@@ -81,7 +81,7 @@ export class DandelionScene extends ORE.BaseScene{
 
 		this.dandeilon.addBreath( this.micData.volume * 0.001 + this.breatFinger);
 
-		this.floor.update( this.time );
+		// this.floor.update( this.time );
 
 		this.background.update( this.time );
 
