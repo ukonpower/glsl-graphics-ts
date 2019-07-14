@@ -10,9 +10,17 @@ $constants
 
 void main() {
 
-	vec3 pos = position;
+	vec3 pos = position;	
+	vec3 c = vec3( 0.0 );
 
 	pos.yz *= rotate( HPI );
+
+	c += smoothstep( 0.2, .4, length( pos.z ) );
+
+	float len = length( pos );
+	
+	c.y += abs(sin( len - time)) * 0.6;
+	c.z += abs(sin( len - time + 0.5)) * 0.5;
 
 	float lenX = length( pos.x );
 	pos.z *= (sin( lenX * PI )) * 0.7 * ( 1.5 - abs( sin( lenX * PI * 3.0 )) * 0.8);
@@ -28,7 +36,8 @@ void main() {
 	vNormal = normal;
 
 	float w = length( pos ) * 0.4;
-	vec3 c = vec3( 1.0 ) * w;
+
+
 
 	vColor = vec3(c);
 }

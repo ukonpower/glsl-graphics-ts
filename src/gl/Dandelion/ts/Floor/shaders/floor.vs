@@ -6,8 +6,6 @@ $rotate
 $constants
 $noise2D
 
-#include <fog_pars_vertex>
-
 void main() {
     vec3 vp = position;
 
@@ -22,8 +20,6 @@ void main() {
     vViewPosition = -mvPosition.xyz;
 
     vColor = vec3( 0.2, 0.4, 0.0 );
-
-    #include <fog_vertex>
 
 }
 

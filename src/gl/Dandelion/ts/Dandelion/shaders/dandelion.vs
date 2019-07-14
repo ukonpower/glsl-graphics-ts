@@ -33,7 +33,7 @@ void main() {
 	vp.xy *= rotate( rotZ * rotW );
 	vp.xz *= rotate( ( rotY ) * rotW );
 
-	vp.yz *= rotate( breath * (breath + 0.3) * sin( time * 20.0 - vp.y * 20.0) * 0.3 );
+	// vp.yz *= rotate( breath * (breath + 0.3) * sin( time * 20.0 - vp.y * 20.0) * 0.3 );
 
 	vec4 mvPosition = modelViewMatrix * vec4(wp + vp, 1.0);
 	

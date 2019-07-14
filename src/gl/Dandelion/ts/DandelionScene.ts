@@ -57,6 +57,11 @@ export class DandelionScene extends ORE.BaseScene{
 		this.dandeilon = new Dandelion( this.renderer );
 		this.scene.add( this.dandeilon );
 
+		
+		let box = new THREE.BoxGeometry(1, 1);
+		let mesh = new THREE.MeshNormalMaterial();
+		this.scene.add( new THREE.Mesh(box,mesh));
+
 		this.floor = new Floor();
 		this.floor.position.y = -0.1;
 		this.scene.add( this.floor );
@@ -70,6 +75,7 @@ export class DandelionScene extends ORE.BaseScene{
 		this.scene.add( this.background );
 
 		this.noisePP = new NoisePostProcessing( this.renderer );
+
 
 	}
 
