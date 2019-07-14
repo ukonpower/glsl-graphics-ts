@@ -74,11 +74,11 @@ export class Dandelion extends THREE.Object3D{
 		this.num = spherePos.length / 3;
 
 		// いい感じの解像度求めるくん
-		for( let i = 0; i < 1000; i++ ){
-			if( this.num / i - Math.floor( this.num / i) == 0 ){
-				console.log(i, this.num / i);
-			}
-		}
+		// for( let i = 0; i < 1000; i++ ){
+		// 	if( this.num / i - Math.floor( this.num / i) == 0 ){
+		// 		console.log(i, this.num / i);
+		// 	}
+		// }
 
 		//kernels & datas
 		this.kernels = {
