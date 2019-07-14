@@ -31,7 +31,7 @@ void main() {
 
 	float rotW = max( 0.0, 1.0 - info.y * 0.5 );
 	vp.xy *= rotate( rotZ * rotW );
-	vp.xz *= rotate( ( rotY ) * rotW );
+	vp.xz *= rotate( ( rotY ) * rotW - HPI);
 
 	// vp.yz *= rotate( breath * (breath + 0.3) * sin( time * 20.0 - vp.y * 20.0) * 0.3 );
 

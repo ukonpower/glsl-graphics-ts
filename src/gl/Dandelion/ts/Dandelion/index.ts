@@ -11,18 +11,16 @@ import tubomiVert from './shaders/tubomi.vs';
 
 import comshaderInfo from './shaders/comShaders/info.fs';
 import comShaderPosition from './shaders/comShaders/position.fs';
-import comShaderVelocity from './shaders/comShaders/velocity.fs';
+
 import { GPUComputationController, GPUComputationKernel, GPUcomputationData } from '../GPUComputationController';
 
 declare interface Kernels{
 	info: GPUComputationKernel
 	position: GPUComputationKernel;
-	velocity: GPUComputationKernel;
 }
 
 declare interface Datas{
 	position: GPUcomputationData;
-	velocity: GPUcomputationData;
 	info: GPUcomputationData;
 }
 
@@ -86,7 +84,6 @@ export class Dandelion extends THREE.Object3D{
 		this.kernels = {
 			info: this.gcController.createKernel( comshaderInfo ),
 			position: this.gcController.createKernel( comShaderPosition ),
-			velocity: this.gcController.createKernel( comShaderVelocity ),
 		}
 
 		this.datas = {
@@ -99,11 +96,6 @@ export class Dandelion extends THREE.Object3D{
 				minFilter: THREE.NearestFilter,
 				magFilter: THREE.NearestFilter
 			}),
-			
-			velocity: this.gcController.createData({
-				minFilter: THREE.NearestFilter,
-				magFilter: THREE.NearestFilter
-			})
 		}
 
 		//set compute uniforms
@@ -112,7 +104,6 @@ export class Dandelion extends THREE.Object3D{
 		this.kernels.info.uniforms.breath = { value: 0 };
 		this.kernels.info.uniforms.infoTex = { value: this.datas.info.buffer.texture };
 		this.kernels.info.uniforms.positionTex = { value: this.datas.position.buffer.texture };
-		this.kernels.info.uniforms.velocityTex = { value: this.datas.velocity.buffer.texture };
 
 		this.kernels.position.uniforms.time = { value: 0 };
 		this.kernels.position.uniforms.fluffPos = { value: 2.5 };
@@ -120,12 +111,6 @@ export class Dandelion extends THREE.Object3D{
 		this.kernels.position.uniforms.initPositionTex = { value: this.initPositionTex };
 		this.kernels.position.uniforms.infoTex = { value: this.datas.info.buffer.texture };
 		this.kernels.position.uniforms.positionTex = { value: this.datas.position.buffer.texture };
-		this.kernels.position.uniforms.velocityTex = { value: this.datas.velocity.buffer.texture };
-
-		this.kernels.velocity.uniforms.time = { value: 0 };
-		this.kernels.velocity.uniforms.infoTex = { value: this.datas.info.buffer.texture };
-		this.kernels.velocity.uniforms.positionTex = { value: this.datas.position.buffer.texture };
-		this.kernels.velocity.uniforms.velocityTex = { value: this.datas.velocity.buffer.texture };
 
 		let geo = new THREE.InstancedBufferGeometry();
 		
@@ -310,20 +295,12 @@ export class Dandelion extends THREE.Object3D{
 		this.kernels.info.uniforms.time.value = this.time;
 		this.kernels.info.uniforms.deltaTime.value = deltaTime;
 		this.kernels.info.uniforms.breath.value = this.breath;
-		this.kernels.info.uniforms.velocityTex.value = this.datas.velocity.buffer.texture;
 		this.kernels.info.uniforms.positionTex.value = this.datas.position.buffer.texture;
 		this.kernels.info.uniforms.infoTex.value = this.datas.info.buffer.texture;
 		this.gcController.compute( this.kernels.info, this.datas.info );
 
-		this.kernels.velocity.uniforms.time.value = this.time;
-		this.kernels.velocity.uniforms.velocityTex.value = this.datas.velocity.buffer.texture;
-		this.kernels.velocity.uniforms.positionTex.value = this.datas.position.buffer.texture;
-		this.kernels.velocity.uniforms.infoTex.value = this.datas.info.buffer.texture;
-		this.gcController.compute( this.kernels.velocity, this.datas.velocity );
-
 		this.kernels.position.uniforms.time.value = this.time;
 		this.kernels.position.uniforms.breath.value = this.breath;
-		this.kernels.position.uniforms.velocityTex.value = this.datas.velocity.buffer.texture;
 		this.kernels.position.uniforms.positionTex.value = this.datas.position.buffer.texture;
 		this.kernels.position.uniforms.infoTex.value = this.datas.info.buffer.texture;
 		this.gcController.compute( this.kernels.position, this.datas.position );

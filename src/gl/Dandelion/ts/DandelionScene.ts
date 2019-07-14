@@ -38,44 +38,34 @@ export class DandelionScene extends ORE.BaseScene{
 
 		this.renderer = this.gProps.renderer;
 
-		// this.scene.background = new THREE.Color( 0xffffff );
-		// this.scene.fog = new THREE.Fog( 0xffffff, 3, 20);
 		this.micData = new MicData( window.navigator, 256 );
 		
 		this.camera.position.set( 2, 4 ,5 );
 		this.camera.lookAt( 0, 1.5, 0 );
 		
         let light = new THREE.DirectionalLight();
-		light.position.y = 1;
+		light.position.z = 1;
 		light.position.y = 3;
+		light.intensity = 0.5;
 		this.scene.add( light );
 
 		let alight = new THREE.AmbientLight();
-		alight.intensity = 0.8;
+		alight.intensity = 1.0;
 		this.scene.add( alight );
 
 		this.dandeilon = new Dandelion( this.renderer );
 		this.scene.add( this.dandeilon );
 
-		
-		let box = new THREE.BoxGeometry(1, 1);
-		let mesh = new THREE.MeshNormalMaterial();
-		this.scene.add( new THREE.Mesh(box,mesh));
-
-		this.floor = new Floor();
-		this.floor.position.y = -0.1;
-		this.scene.add( this.floor );
-
-		this.bloom = new ORE.BloomFilter( this.renderer );
-		this.bloom.threshold = 0.8;
-		this.bloom.renderCount = 3;
-		this.bloom.brightness = 1.0;
+		let floorGeo = new THREE.CylinderGeometry( 1, 1, 0.25 );
+		let mat = new THREE.MeshStandardMaterial();
+		let floor = new THREE.Mesh( floorGeo, mat );
+		floor.position.y = -0.125;
+		this.scene.add( floor );
 
 		this.background = new Background();
 		this.scene.add( this.background );
 
 		this.noisePP = new NoisePostProcessing( this.renderer );
-
 
 	}
 
@@ -87,15 +77,6 @@ export class DandelionScene extends ORE.BaseScene{
 
 		this.dandeilon.addBreath( this.micData.volume * 0.001 + this.breatFinger);
 
-		// this.floor.update( this.time );
-
-		this.background.update( this.time );
-
-		// this.dandeilon.rotateY( 0.01 );
-		
-		// this.bloom.render( this.scene, this.camera );
-		// this.renderer.render( this.scene, this.camera );
-
 		this.noisePP.update( this.time );
 		this.noisePP.render( this.scene, this.camera );
 	
@@ -106,8 +87,6 @@ export class DandelionScene extends ORE.BaseScene{
 		super.onResize( width, height );
 
 		this.noisePP.resize( this.width, this.height );
-
-		this.bloom.resize( this.width, this.height );
 	
 	}
 
@@ -118,6 +97,8 @@ export class DandelionScene extends ORE.BaseScene{
     onTouchMove( cursor: ORE.Cursor, event: MouseEvent ) {
 
 		this.breatFinger += cursor.delta.y * -0.0001;
+
+		event.preventDefault();
 
 	}
 

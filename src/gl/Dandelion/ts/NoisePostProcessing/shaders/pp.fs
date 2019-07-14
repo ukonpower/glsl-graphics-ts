@@ -3,7 +3,7 @@ varying vec2 vUv;
 
 uniform float time;
 
-#define N 30
+#define N 16
 
 $random
 $noise3D
@@ -13,7 +13,7 @@ void main(void){
     vec2 u = vUv * 2.0 - 1.0;
     vec2 uv = vUv;
 
-    float w = max(.0,length(u)) * 0.02;
+    float w = max(.0,length(u)) * 0.04;
     
     vec2 vig = u * w;
 
@@ -30,8 +30,8 @@ void main(void){
         c.y += texture2D(backbuffer, uv - ( v + dir * ( 1.3 ) ) ).y;
         c.z += texture2D(backbuffer, uv - ( v + dir * ( 1.6 ) ) ).z;
     }
-    c /= float(N) - 3.0;
+    c /= float(N) - 1.0;
 
-	c += rnd * 0.05;
+	c += rnd * 0.2;
 	gl_FragColor = vec4(c,1.0);
 }

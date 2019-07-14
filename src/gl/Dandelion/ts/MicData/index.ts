@@ -1,3 +1,6 @@
+declare var AudioContext: any;
+declare var webkitAudioContext: any;
+
 export default class MicData{
 
 	private navigator: Navigator;
@@ -22,7 +25,7 @@ export default class MicData{
 
 	private onGetUserMesia( stream: MediaStream ){
 
-		this.context = new AudioContext();
+		this.context = new ((<any>window).AudioContext || (<any>window).webkitAudioContext)();
 		this.analyzer = this.context.createAnalyser();
 		this.analyzer.fftSize = this.bufferSize;
 		this.analyzer.smoothingTimeConstant = 0.8;
