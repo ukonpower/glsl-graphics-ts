@@ -2,7 +2,6 @@ uniform float time;
 uniform float breath;
 
 varying vec3 vViewPosition;
-varying vec3 vNormal;
 varying vec3 vColor;
 
 $rotate
@@ -21,7 +20,6 @@ void main() {
 	gl_Position = projectionMatrix * mvPosition;
 	
 	vViewPosition = -mvPosition.xyz;
-	vNormal = normal;
 
 	vColor = vec3(1.0);
 }

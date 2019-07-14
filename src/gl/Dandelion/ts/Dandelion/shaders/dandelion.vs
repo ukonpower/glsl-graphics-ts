@@ -27,11 +27,13 @@ void main() {
 	vec3 vp = position;
 
 	float rotZ = ( 0.5 - ( offsetPos.y )) * PI;
-	float rotY = atan2( offsetPos.x, offsetPos.z );
+
+	vec2 nop = normalize( offsetPos.xz );
+	float rotY = atan2( nop.x, nop.y );
 
 	float rotW = max( 0.0, 1.0 - info.y * 0.5 );
 	vp.xy *= rotate( rotZ * rotW );
-	vp.xz *= rotate( ( rotY ) * rotW - HPI);
+	vp.xz *= rotate( rotY );
 
 	// vp.yz *= rotate( breath * (breath + 0.3) * sin( time * 20.0 - vp.y * 20.0) * 0.3 );
 

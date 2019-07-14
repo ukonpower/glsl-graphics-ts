@@ -131,7 +131,7 @@ export class Dandelion extends THREE.Object3D{
 
         let n = new THREE.InstancedBufferAttribute( new Float32Array(this.num * 1), 1, false, 1 );
         let computeCoord = new THREE.InstancedBufferAttribute( new Float32Array(this.num * 2), 2, false, 1 );
-        let offsetPos = new THREE.InstancedBufferAttribute( spherePos , 3, false, 1 );
+		let offsetPos = new THREE.InstancedBufferAttribute( new Float32Array( spherePos ) , 3, false, 1 );
 
         for (let i = 0; i < this.num; i++) {
 			n.setX(i, i);
