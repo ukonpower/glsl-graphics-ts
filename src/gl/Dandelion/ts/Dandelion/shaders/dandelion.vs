@@ -23,20 +23,33 @@ void main() {
 
 	vec3 wp = texture2D( positionTex, computeUV ).xyz;
 	vec4 info = texture2D( infoTex, computeUV );
-
 	vec3 vp = position;
 
+	vp.xy *= rotate(sin( time * 20.0 - vp.y * 10.0) * 0.1 * breath);
 	vp.y -= 0.15;
+
+	float scale =  smoothstep(0.0,0.3,sin(info.y / 5.0 * PI));
+	vp.y *= scale;
+	
+	float len = length(vp.y - 0.1);
+	vec3 c = vec3(0.0);
+
+	c.x +=  sin(len * 8.0 + time * 3.3);
+	c.y +=  sin(len * 8.0 + time * 3.0 - 0.5);
+	c.z +=  sin(len * 8.0 + time * 3.0 - 1.0);
+
+	c = mix( c, vec3(1.0),smoothstep(0.1,0.0,len));
 
 	float rotZ = offsetPos.z;
 	float rotY = offsetPos.y;
 	
-	float rotW = max( 0.0, 1.0 - info.y * 0.5 );
-	
 	vp.xy *= rotate( rotZ );
 	vp.xz *= rotate( rotY - HPI);
  
-	vp.yz *= rotate( breath * 1.0 );
+ 
+	float rotW = max( 0.0, 1.0 - info.y * 0.5 );
+
+	vp.yz *= rotate( breath * 1.0 * rotW);
 
 	vec4 mvPosition = modelViewMatrix * vec4(wp + vp, 1.0);
 	
@@ -44,8 +57,6 @@ void main() {
 	
 	vViewPosition = -mvPosition.xyz;
 
-	vec3 c = vec3( 1.0 );
-
-	vColor = vec4( c , info.w );
+	vColor = vec4( c ,1.0);
 
 }

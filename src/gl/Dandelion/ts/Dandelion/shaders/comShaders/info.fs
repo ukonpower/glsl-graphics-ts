@@ -23,17 +23,20 @@ void main( void ){
 	float state = info.x;
 	float lifeTime = info.y;
 	float pow = info.z;
-	float allTime = info.w;
-	allTime += deltaTime;
+	float colW = info.w;
 
 	if( state == 0.0 ){
 
-		pow += ( snoise( vec4( pos, time ) ) + 0.2 )  * smoothstep( 0.4, 1.5, breath);
+		pow += ( snoise( vec4( pos, time ) ) + 0.2 )  * smoothstep( 0.4, 1.5, abs(breath));
 
 		if( pow >= 1.0 ){
 
 			state = 1.0;
 
+		}
+
+		if( lifeTime < 1.5 ){
+			lifeTime = lifeTime + deltaTime;
 		}
 
 	}else if( state == 1.0 ){
@@ -48,13 +51,11 @@ void main( void ){
 
 			lifeTime = 0.0;
 
-			allTime = 0.0;
-
 		}
 
 	}
 
 	
-	gl_FragColor = vec4( state, lifeTime, pow, allTime );
+	gl_FragColor = vec4( state, lifeTime, pow, colW );
 
 }

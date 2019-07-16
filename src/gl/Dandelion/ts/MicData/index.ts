@@ -28,6 +28,7 @@ export default class MicData{
 		this.context = new ((<any>window).AudioContext || (<any>window).webkitAudioContext)();
 		this.analyzer = this.context.createAnalyser();
 		this.analyzer.fftSize = this.bufferSize;
+		
 		this.analyzer.smoothingTimeConstant = 0.8;
 		
 		let input = this.context.createMediaStreamSource( stream );

@@ -32,6 +32,6 @@ void main(void){
     }
     c /= float(N) - 1.0;
 
-	c += rnd * 0.2;
+	c += rnd * 0.1;
 	gl_FragColor = vec4(c,1.0);
 }

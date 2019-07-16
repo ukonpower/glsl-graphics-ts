@@ -21,5 +21,5 @@ void main() {
 	
 	vViewPosition = -mvPosition.xyz;
 
-	vColor = vec3(1.0);
+	vColor = vec3(0.1);
 }

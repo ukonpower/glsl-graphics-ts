@@ -11,9 +11,16 @@ $constants
 void main() {
 
 	vec3 pos = position;
+
+	vec3 c = vec3(1.0);
+	// c.x = sin( pos.y * 3. - time * 20.0);
+	// c.y = sin( pos.y * 3. - time * 20.0 - 1.0);
+	// c.z = sin( pos.y * 3. - time * 20.0 - 2.0);
+
 	pos.y += 1.25;
 
 	pos.yz *= rotate( breath * ( pos.y / 2.5 ) );
+	
 
 	vec4 mvPosition = modelViewMatrix * vec4( pos, 1.0 );
 	
@@ -24,7 +31,6 @@ void main() {
 
 
 	float w = length( pos ) * 0.4;
-	vec3 c = vec3( 1.0 ) * w;
 
 	vColor = vec3(c);
 

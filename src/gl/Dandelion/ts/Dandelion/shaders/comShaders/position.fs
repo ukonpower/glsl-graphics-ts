@@ -38,7 +38,9 @@ void main( void ){
 
 		pos = texture2D( positionTex, uv ).xyz;
 
-		pos += noise3D( pos * 0.6 , time * 0.1  ) * 0.05 + vec3( 0.03, 0.0, -0.1 ) * 0.5;
+		pos.xz *= rotate( 0.003 * length(fluffPos) * (snoise(vec4(pos * 0.4, time)) * 0.5 + 0.5) * 2.0 );
+
+		pos += noise3D( pos * 0.6 , time * 0.1  ) * 0.05 + vec3( 0.03, 0.0, -0.1 ) * breath;
 
 	}
 	

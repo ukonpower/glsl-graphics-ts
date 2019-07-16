@@ -14,10 +14,6 @@ export class DandelionScene extends ORE.BaseScene{
 
 	private micData: MicData;
 
-	private floor: Floor;
-
-	private bloom: ORE.BloomFilter;
-
 	private breatFinger = 0.0;
 
 	private background: Background;
@@ -41,7 +37,7 @@ export class DandelionScene extends ORE.BaseScene{
 		this.micData = new MicData( window.navigator, 256 );
 		
 		this.camera.position.set( 2, 4 ,5 );
-		this.camera.lookAt( 0, 1.5, 0 );
+		this.camera.lookAt( 0.0, 1.5, 0 );
 		
         let light = new THREE.DirectionalLight();
 		light.position.z = 1;
@@ -57,7 +53,9 @@ export class DandelionScene extends ORE.BaseScene{
 		this.scene.add( this.dandeilon );
 
 		let floorGeo = new THREE.CylinderGeometry( 1, 1, 0.25 );
-		let mat = new THREE.MeshStandardMaterial();
+		let mat = new THREE.MeshStandardMaterial({
+			color: new THREE.Color( 0x191919 )
+		});
 		let floor = new THREE.Mesh( floorGeo, mat );
 		floor.position.y = -0.125;
 		this.scene.add( floor );
@@ -73,7 +71,7 @@ export class DandelionScene extends ORE.BaseScene{
 
 		this.breatFinger *= 0.97;
 
-		this.dandeilon.update( deltaTime );
+		this.dandeilon.update( deltaTime );		
 
 		this.dandeilon.addBreath( this.micData.volume * 0.001 + this.breatFinger);
 
@@ -87,6 +85,23 @@ export class DandelionScene extends ORE.BaseScene{
 		super.onResize( width, height );
 
 		this.noisePP.resize( this.width, this.height );
+
+		let aspect = width / height;
+
+		if( aspect > 1.0 ){
+			// pc
+
+			this.camera.position.z = 5;
+			this.camera.lookAt( 0.0, 1.5, 0 );
+			
+			
+		}else{
+			// sumaho
+			this.camera.position.z = 6;
+			this.camera.lookAt( 0.0, 1.5, 0 );
+
+
+		}
 	
 	}
 

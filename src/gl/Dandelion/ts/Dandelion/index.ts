@@ -67,18 +67,17 @@ export class Dandelion extends THREE.Object3D{
 		
 		//position
 		let sphere = new THREE.SphereBufferGeometry( 0.5, 30, 20 );
-		// let sphere = new THREE.BoxBufferGeometry( 1, 1 );
 		let spherePos = sphere.attributes.position.array;
 		
 		this.initPositionTex = this.getInitPosition( spherePos );
 		this.num = spherePos.length / 3;
 
 		// いい感じの解像度求めるくん
-		for( let i = 0; i < 1000; i++ ){
-			if( this.num / i - Math.floor( this.num / i) == 0 ){
-				console.log(i, this.num / i);
-			}
-		}
+		// for( let i = 0; i < 1000; i++ ){
+		// 	if( this.num / i - Math.floor( this.num / i) == 0 ){
+		// 		console.log(i, this.num / i);
+		// 	}
+		// }
 
 		//kernels & datas
 		this.kernels = {
@@ -115,7 +114,7 @@ export class Dandelion extends THREE.Object3D{
 		let geo = new THREE.InstancedBufferGeometry();
 		
 		//copy original mesh
-		let fluffMesh = new THREE.BoxBufferGeometry( 0.01, 0.3, 0.01, 1, 20 );
+		let fluffMesh = new THREE.BoxBufferGeometry( 0.01, 0.5, 0.01, 1, 20 );
 
         let vertice = ( fluffMesh.attributes.position as THREE.BufferAttribute).clone();
         geo.addAttribute( 'position', vertice );
@@ -189,7 +188,6 @@ export class Dandelion extends THREE.Object3D{
             lights: true,
 			side: THREE.DoubleSide,
 			transparent: true,
-			depthTest: false,
 			blending: THREE.NormalBlending
 		})
 
@@ -238,7 +236,7 @@ export class Dandelion extends THREE.Object3D{
 
 		this.tubomiUni = THREE.UniformsUtils.merge( [ baseMat.uniforms, cUni ] );
 
-		let geo = new THREE.SphereGeometry( 0.15, 10, 10 );
+		let geo = new THREE.SphereGeometry( 0.10, 10, 10 );
 		let mat = new THREE.ShaderMaterial({
 			vertexShader: tubomiVert,
 			fragmentShader: leafFrag,
