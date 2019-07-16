@@ -54,7 +54,7 @@ export class DandelionScene extends ORE.BaseScene{
 
 		let floorGeo = new THREE.CylinderGeometry( 1, 1, 0.25 );
 		let mat = new THREE.MeshStandardMaterial({
-			color: new THREE.Color( 0x191919 )
+			color: new THREE.Color( 0x252525 )
 		});
 		let floor = new THREE.Mesh( floorGeo, mat );
 		floor.position.y = -0.125;

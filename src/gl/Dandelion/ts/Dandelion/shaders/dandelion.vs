@@ -45,11 +45,8 @@ void main() {
 	
 	vp.xy *= rotate( rotZ );
 	vp.xz *= rotate( rotY - HPI);
- 
- 
-	float rotW = max( 0.0, 1.0 - info.y * 0.5 );
 
-	vp.yz *= rotate( breath * 1.0 * rotW);
+	vp.yz *= rotate( breath * 1.01);
 
 	vec4 mvPosition = modelViewMatrix * vec4(wp + vp, 1.0);
 	
