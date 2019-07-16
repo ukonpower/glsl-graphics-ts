@@ -62,11 +62,11 @@ export class Dandelion extends THREE.Object3D{
 
 	private createFluff(){
 
-		this.computeResolution = new THREE.Vector2( 31, 41 );
+		this.computeResolution = new THREE.Vector2( 21,31 );
 		this.gcController = new GPUComputationController( this.renderer, this.computeResolution );
 		
 		//position
-		let sphere = new THREE.SphereBufferGeometry( 0.5, 40, 30 );
+		let sphere = new THREE.SphereBufferGeometry( 0.5, 30, 20 );
 		// let sphere = new THREE.BoxBufferGeometry( 1, 1 );
 		let spherePos = sphere.attributes.position.array;
 		
@@ -74,11 +74,11 @@ export class Dandelion extends THREE.Object3D{
 		this.num = spherePos.length / 3;
 
 		// いい感じの解像度求めるくん
-		// for( let i = 0; i < 1000; i++ ){
-		// 	if( this.num / i - Math.floor( this.num / i) == 0 ){
-		// 		console.log(i, this.num / i);
-		// 	}
-		// }
+		for( let i = 0; i < 1000; i++ ){
+			if( this.num / i - Math.floor( this.num / i) == 0 ){
+				console.log(i, this.num / i);
+			}
+		}
 
 		//kernels & datas
 		this.kernels = {
@@ -115,7 +115,7 @@ export class Dandelion extends THREE.Object3D{
 		let geo = new THREE.InstancedBufferGeometry();
 		
 		//copy original mesh
-		let fluffMesh = new THREE.BoxBufferGeometry( 0.01, 0.2, 0.01, 1, 20 );
+		let fluffMesh = new THREE.BoxBufferGeometry( 0.01, 0.3, 0.01, 1, 20 );
 
         let vertice = ( fluffMesh.attributes.position as THREE.BufferAttribute).clone();
         geo.addAttribute( 'position', vertice );
@@ -131,13 +131,28 @@ export class Dandelion extends THREE.Object3D{
 
         let n = new THREE.InstancedBufferAttribute( new Float32Array(this.num * 1), 1, false, 1 );
         let computeCoord = new THREE.InstancedBufferAttribute( new Float32Array(this.num * 2), 2, false, 1 );
-		let offsetPos = new THREE.InstancedBufferAttribute( new Float32Array( spherePos ) , 3, false, 1 );
+		let offsetPos = new THREE.InstancedBufferAttribute(  new Float32Array(this.num * 3) , 3, false , 1 );
+		
 
         for (let i = 0; i < this.num; i++) {
 			n.setX(i, i);
-			computeCoord.setXY(i, i % this.computeResolution.x, Math.floor( i / this.computeResolution.x ))
-        }
+			computeCoord.setXY(i,i % this.computeResolution.x / ( this.computeResolution.x - 1), Math.floor( i / this.computeResolution.x ) / ( this.computeResolution.y - 1))
+			
+			let x = spherePos[i * 3 + 0];
+			let y = spherePos[i * 3 + 1];
+			let z = spherePos[i * 3 + 2];
 
+			let rotZ = ( 2.5 - ( y )) * Math.PI;
+			let rotY = Math.atan2( x , z );
+			
+			offsetPos.setXYZ( i, 0.0, rotY, rotZ );
+
+		}
+
+		console.log( offsetPos );
+		
+		console.log( computeCoord );
+		
         geo.addAttribute('num', n);
         geo.addAttribute('computeCoord', computeCoord);
         geo.addAttribute('offsetPos', offsetPos);
@@ -174,6 +189,7 @@ export class Dandelion extends THREE.Object3D{
             lights: true,
 			side: THREE.DoubleSide,
 			transparent: true,
+			depthTest: false,
 			blending: THREE.NormalBlending
 		})
 
@@ -272,6 +288,9 @@ export class Dandelion extends THREE.Object3D{
 	private getInitPosition( array: any ): THREE.DataTexture{
 
 		let tex = this.gcController.createInitializeTexture();
+
+		console.log(tex.image.data.length / 4);
+		
 		
 		for( let i = 0; i < tex.image.data.length; i +=4 ){
 

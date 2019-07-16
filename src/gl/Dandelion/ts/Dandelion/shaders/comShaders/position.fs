@@ -32,8 +32,8 @@ void main( void ){
 		pos = texture2D( initPositionTex, uv ).xyz;
 		pos.y += fluffPos;
 
-		pos.yz *= rotate( breath );
-
+		pos.yz *= rotate( breath * 1.0 );
+		
 	}else if ( info.x == 1.0 ){ //空中
 
 		pos = texture2D( positionTex, uv ).xyz;
