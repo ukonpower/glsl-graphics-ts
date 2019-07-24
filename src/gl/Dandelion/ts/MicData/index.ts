@@ -9,6 +9,8 @@ export default class MicData{
 	private bufferSize: number;
 	private bufferArray: Uint8Array;
 
+	private processor: ScriptProcessorNode;
+
 	public volume: number = 0.0;
 
 	constructor( navigator: Navigator, bufferSize: number ){
@@ -32,13 +34,13 @@ export default class MicData{
 		this.analyzer.smoothingTimeConstant = 0.8;
 		
 		let input = this.context.createMediaStreamSource( stream );
-		let processor = this.context.createScriptProcessor( this.bufferSize , 1, 1 );
+		this.processor = this.context.createScriptProcessor( this.bufferSize , 1, 1 );
 
 		input.connect( this.analyzer );
-		this.analyzer.connect( processor );
-		processor.connect( this.context.destination );
+		this.analyzer.connect( this.processor );
+		this.processor.connect( this.context.destination );
 
-		processor.addEventListener( 'audioprocess', this.onProcess.bind(this) );
+		this.processor.addEventListener( 'audioprocess', this.onProcess.bind(this) );
 
 	}
 
@@ -56,8 +58,9 @@ export default class MicData{
 		let sum = 0;
 
 		for( let i = 0; i < this.bufferArray.length; i++ ){
-			sum += this.bufferArray[i];
 
+			sum += this.bufferArray[i];
+			
 		}
 
 		this.volume = sum / this.bufferArray.length;
