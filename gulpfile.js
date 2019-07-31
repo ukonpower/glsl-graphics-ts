@@ -83,7 +83,6 @@ gulp.task('browser-sync', function(){
             index: "index.html",
         },
         startPath: './gl/',
-        https: true
     });
 });
 

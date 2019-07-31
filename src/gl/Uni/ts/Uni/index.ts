@@ -72,6 +72,8 @@ export default class Flower extends THREE.Object3D{
             lights: true,
             side: THREE.DoubleSide
         })
+        console.log( geo );
+        
 
         let flower = new THREE.Mesh(geo, mat)
         flower.position.y = 0.00;
