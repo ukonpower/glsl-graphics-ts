@@ -28,7 +28,7 @@ void main() {
 	float ttime = max( 0.0, mod( time * 1.5, 4. ) - percent * 2.0);
 	
 	vColor = vec4( sin( percent * TPI * 2.0) + group, percent, 1.0, 1.0 - changeW);
-	vColor.xyz += uColor * 0.5;
+	vColor.xyz += uColor * 1.0;
 	
 	pos *= sin( min( ttime * 2.0, PI) ) * (percent);
 	pos.xz *= cos( pos.y * PI );
