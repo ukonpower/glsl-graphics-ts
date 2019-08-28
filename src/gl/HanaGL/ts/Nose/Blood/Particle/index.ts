@@ -6,20 +6,21 @@ import comShaderVelosity from './shaders/computeVelocity.fs';
 
 import frag from './shaders/particle.fs';
 import complexVert from './shaders/complexParticle.vs';
+import { GPUComputationKernel,GPUComputationController,GPUcomputationData } from '../../../GPUComputationController';
 
 declare interface Kernels{
-    position: ORE.GPUComputationKernel,
-    velocity: ORE.GPUComputationKernel
+    position: GPUComputationKernel,
+    velocity: GPUComputationKernel
 }
 
 export class BloodParticle extends THREE.Object3D{
     
     private renderer: THREE.WebGLRenderer;
 
-    private gcController: ORE.GPUComputationController;
+    private gcController: GPUComputationController;
     private kernels: Kernels;
-    private positionData: ORE.GPUcomputationData;
-    private velocityData: ORE.GPUcomputationData;
+    private positionData: GPUcomputationData;
+    private velocityData: GPUcomputationData;
     
     private num:number;
 	private pointUniforms: ORE.Uniforms;
@@ -34,7 +35,7 @@ export class BloodParticle extends THREE.Object3D{
         this.renderer = renderer;
         this.num = num;
 
-        this.gcController = new ORE.GPUComputationController( this.renderer, new THREE.Vector2( this.num, this.num ));
+        this.gcController = new GPUComputationController( this.renderer, new THREE.Vector2( this.num, this.num ));
 	
 		this.complex = this.gcController.isSupported;
 
@@ -65,12 +66,14 @@ export class BloodParticle extends THREE.Object3D{
 			this.kernels.position.uniforms.texturePosition = { value: null };
 			this.kernels.position.uniforms.textureVelocity = { value: null };
 			this.kernels.position.uniforms.deltaTime = { value: 0 };
+			this.kernels.position.uniforms.eruptionPos = { value: new THREE.Vector3( 0, 0, 0 ) }
+			this.kernels.position.uniforms.isSplash = { value: new THREE.Vector3( 0, 0, 0 ) }
 
 			this.createComplexParticle();
 
 		}
 
-    }
+	}
 
     createComplexParticle() {
         
@@ -97,6 +100,9 @@ export class BloodParticle extends THREE.Object3D{
 			texturePosition:{
 				value: null
 			},
+			textureVelocity:{
+				value: null
+			},
 			windowSizeY: {
 				value: window.innerHeight * this.renderer.getPixelRatio()
 			},
@@ -110,8 +116,8 @@ export class BloodParticle extends THREE.Object3D{
             fragmentShader: frag,
 			uniforms: this.pointUniforms,
 			transparent: true,
-			depthTest: false,
-			blending: THREE.AdditiveBlending
+			depthTest: true,
+			// blending: THREE.AdditiveBlending
         } );
 
 		let obj = new THREE.Points( geo, mat );
@@ -126,9 +132,6 @@ export class BloodParticle extends THREE.Object3D{
 
 		if( this.complex ){
 
-			console.log( this.kernels.velocity.uniforms );
-			
-
 			this.kernels.velocity.uniforms.texturePosition.value = this.positionData.buffer.texture;
 			this.kernels.velocity.uniforms.textureVelocity.value = this.velocityData.buffer.texture;
 			this.kernels.velocity.uniforms.time.value = this.time;
@@ -142,6 +145,7 @@ export class BloodParticle extends THREE.Object3D{
 			this.gcController.compute( this.kernels.position, this.positionData );
 			
 			this.pointUniforms.texturePosition.value = this.positionData.buffer.texture;
+			this.pointUniforms.textureVelocity.value = this.velocityData.buffer.texture;
 		
 		}else{
 
@@ -149,6 +153,19 @@ export class BloodParticle extends THREE.Object3D{
 
 		}
 		
+	}
+
+	public splash( pos: THREE.Vector3 ){
+
+		this.kernels.position.uniforms.eruptionPos.value = pos;
+		this.kernels.position.uniforms.isSplash.value = true;
+
+	}
+
+	public heal(){
+
+		this.kernels.position.uniforms.isSplash.value = false;
+
 	}
 	
 }

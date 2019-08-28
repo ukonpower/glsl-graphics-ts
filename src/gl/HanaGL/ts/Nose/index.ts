@@ -12,6 +12,9 @@ export class Nose extends THREE.Object3D{
 	private wireNose: THREE.Mesh;
 	private meshNose: THREE.Mesh;
 
+	private leftPoint: THREE.Object3D;
+	private rightPoint: THREE.Object3D;
+
 	private blood: Blood;
 
 	constructor( renderer: THREE.WebGLRenderer, gltfScene: THREE.Scene ){
@@ -34,9 +37,11 @@ export class Nose extends THREE.Object3D{
 		this.meshNose.material = new THREE.MeshStandardMaterial({
 			color: 0xffffff,
 			roughness: 0.9,
+			opacity: 1.0,
+			transparent: true
 		})
 
-		// this.add( this.meshNose );
+		this.add( this.meshNose );
 
 		/*-------------------------
 			Wire
@@ -49,14 +54,24 @@ export class Nose extends THREE.Object3D{
 			wireframe: true,
 		});
 
-		// this.add( this.wireNose );
+		this.add( this.wireNose );
+
+		/*-------------------------
+			Positions
+		--------------------------*/
+
+		this.rightPoint = ( this.meshNose.getObjectByName( 'splash_right' ) as Mesh );
+		this.leftPoint = ( this.meshNose.getObjectByName( 'splash_left' ) as Mesh );
+
 
 		/*-------------------------
 			Blood
 		--------------------------*/
 
 		this.blood = new Blood( this.renderer );
-		this.add( this.blood );
+		this.meshNose.add( this.blood );
+
+		this.splash();
 
 	}
 
@@ -69,6 +84,8 @@ export class Nose extends THREE.Object3D{
 	}
 
 	public splash(){
+
+		this.blood.splash( this.rightPoint.position );
 
 	}
 
