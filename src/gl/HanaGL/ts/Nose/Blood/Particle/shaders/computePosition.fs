@@ -3,6 +3,7 @@ uniform sampler2D texturePosition;
 uniform sampler2D textureVelocity;
 uniform float deltaTime;
 
+uniform bool isSplash;
 uniform vec3 eruptionPos;
 
 $random
@@ -33,7 +34,12 @@ void main( void ){
 		) - 0.5;
 
 		pos = eruptionPos + rndOffset * 0.3;
-		posData.w = 0.0;
+
+		if( isSplash ){
+			
+			posData.w = 0.0;
+			
+		}
 
 	}
 

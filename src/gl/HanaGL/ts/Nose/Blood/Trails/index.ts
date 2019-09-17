@@ -62,7 +62,7 @@ export class BloodTrails extends THREE.Object3D{
         //set uniforms
         this.kernels.position.uniforms.texturePosition = { value: null };
         this.kernels.position.uniforms.textureVelocity = { value: null };
-        this.kernels.position.uniforms.eruptionPos = { value: null };
+        this.kernels.position.uniforms.eruptionPos = { value: new THREE.Vector3() };
         this.kernels.position.uniforms.isSplash = { value: false };
         this.kernels.position.uniforms.deltaTime = { value: 0 };
 
@@ -180,6 +180,9 @@ export class BloodTrails extends THREE.Object3D{
             textureVelocity: {
                 value: null
             },
+            diffuse: {
+                value: new THREE.Color( 0xff7711 )
+            }
         }
 
         let phong = THREE.ShaderLib.standard;

@@ -80,15 +80,13 @@ export class DandelionScene extends ORE.BaseScene{
 	
 	}
 
-	onResize( width: number, height: number ) {
+	onResize( args: ORE.ResizeArgs ) {
 	
-		super.onResize( width, height );
+		super.onResize( args );
 
-		this.noisePP.resize( this.width, this.height );
+		this.noisePP.resize( args );		
 
-		let aspect = width / height;
-
-		if( aspect > 1.0 ){
+		if( args.aspectRatio> 1.0 ){
 			// pc
 
 			this.camera.position.z = 5;

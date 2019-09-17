@@ -61,7 +61,6 @@ export default class MainScene extends ORE.BaseScene{
 
 		this.raycaster = new THREE.Raycaster();
 
-		this.onResize(window.innerWidth,window.innerHeight);
 	}
 
 	animate(){
@@ -72,13 +71,11 @@ export default class MainScene extends ORE.BaseScene{
 
 	}
 
-	onResize(width, height) {
+	onResize( args: ORE.ResizeArgs) {
 
-		super.onResize(width,height);
+		super.onResize( args );
 		
-		let aspect = width / height;
-		
-		if(aspect > 1.0){
+		if(args.aspectRatio > 1.0){
 		
 			this.camera.position.z = 7;
 		
@@ -89,7 +86,7 @@ export default class MainScene extends ORE.BaseScene{
 		}
 		
 		this.camera.lookAt(0,-0.0,0);
-		this.pp.resize(width,height);
+		this.pp.resize( args.windowPixelSize.x, args.windowPixelSize.y );
 	
 	}
 

@@ -33,8 +33,6 @@ export default class MainScene extends ORE.BaseScene{
 		super.onBind( gProps );
 
 		this.renderer = gProps.renderer;
-
-		this.onResize(window.innerWidth,window.innerHeight);
 		
         this.light = new THREE.DirectionalLight();
         this.light.position.y = 10;
@@ -77,13 +75,11 @@ export default class MainScene extends ORE.BaseScene{
 		
 	}
 
-	onResize(width, height) {
+	onResize( args: ORE.ResizeArgs ) {
 
-		super.onResize(width,height);
+		super.onResize( args );
 		
-		let aspect = width / height;
-		
-		if(aspect > 1.0){
+		if(args.aspectRatio > 1.0){
 		
 			this.camera.position.z = 3;
 		

@@ -16,7 +16,7 @@ class APP{
 
 		})
 
-		this.controller.bindScene( new TunnelScene );
+		this.controller.bindScene( new TunnelScene() );
 
 	}
 

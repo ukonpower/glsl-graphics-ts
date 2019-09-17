@@ -38,7 +38,8 @@ void main( void ){
 	}else{
 
 		lifeTime = snoise( vec4( uv.xyy * 100.0, time ) );
-		vel = vec3( 0.0, -10.0 - 2.0 * abs( snoise( vec4( uv.xxy * 1.0, time ) ) ), 0.0 );
+		vel = vec3( 0.0, -12.0 - 2.0 * abs( snoise( vec4( uv.xxy * 1.0, time ) ) ), 0.0 );
+		vel.x += pos.x * 6.0;
 
 	}
 

@@ -87,16 +87,14 @@ export class TunnelScene extends ORE.BaseScene{
 		this.pp.update( this.time );
 	}
 
-	onResize( width: number, height: number ) {
+	onResize( args: ORE.ResizeArgs ) {
 	
-		super.onResize( width, height );
+		super.onResize( args );
 		
-		this.bloom.resize( width, height );
-		this.pp.resize( width, height );
+		this.bloom.resize( args.windowPixelSize );
+		this.pp.resize( args );
 
-		let aspect = width / height;
-
-		if( aspect > 1.0 ){
+		if( args.aspectRatio > 1.0 ){
 			// pc
 
 			this.camera.position.z = 5;

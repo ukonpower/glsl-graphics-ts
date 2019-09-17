@@ -49,6 +49,7 @@ export class Blood extends THREE.Object3D{
 	public heal(){
 
 		this.particle.heal();
+		this.trails.heal();
 
 	}
 

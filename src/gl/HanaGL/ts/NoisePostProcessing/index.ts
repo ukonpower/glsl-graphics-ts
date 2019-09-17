@@ -43,9 +43,9 @@ export default class NoisePostProcessing extends THREE.Object3D{
 		this.ppParam[0].uniforms.nw.value = 1.0;
 	}
 
-	resize( width: number, height: number ){
-		this.pp.resize( width, height );
-		this.pp.resolution.width = width;
-		this.pp.resolution.height = height;
+	resize( args: ORE.ResizeArgs ){
+		
+		this.pp.resize( args.windowPixelSize );
+
 	}
 }

@@ -49,17 +49,18 @@ export class DandelionScene extends ORE.BaseScene{
 		this.scene.add( plight );
 
 		this.noisePP = new NoisePostProcessing( this.renderer );
+		
 
 	}
 
 	private loadModels(){
 
-		DRACOLoader.setDecoderPath( './assets/draco/' );
+		// DRACOLoader.setDecoderPath( './assets/draco/' );
 
 		let loader = new GLTFLoader();
-		loader.setDRACOLoader( new DRACOLoader() );
+		// loader.setDRACOLoader( new DRACOLoader() );
 
-		DRACOLoader.getDecoderModule();
+		// DRACOLoader.getDecoderModule();
 
 		loader.load( './assets/model/nose.glb', ( gltf ) => {
 
@@ -76,8 +77,8 @@ export class DandelionScene extends ORE.BaseScene{
 		this.nose = new Nose( this.renderer, scene );
 		this.scene.add( this.nose );
 		
-		this.finger = new Finger( scene );
-		this.scene.add( this.finger );
+		// this.finger = new Finger( scene );
+		// this.scene.add( this.finger );
 
 	}
 
@@ -93,7 +94,9 @@ export class DandelionScene extends ORE.BaseScene{
 
 		if( this.finger ){
 
-			// this.finger.position.y += Math.sin( this.time * 10.0 ) * 0.09;
+			// this.finger.position.y = Math.sin( this.time * 3.0 ) * 0.8;
+
+			// this.nose.updateFingerPos( this.finger.position );
 
 		}
 
@@ -101,15 +104,13 @@ export class DandelionScene extends ORE.BaseScene{
 	
 	}
 
-	onResize( width: number, height: number ) {
+	onResize( args: ORE.ResizeArgs ) {
 	
-		super.onResize( width, height );
+		super.onResize( args );
 
-		this.noisePP.resize( this.width, this.height );
+		this.noisePP.resize( args );
 
-		let aspect = width / height;
-
-		if( aspect > 1.0 ){
+		if( args.aspectRatio > 1.0 ){
 
 			// pc
 			this.camera.position.z = 5;
@@ -129,6 +130,17 @@ export class DandelionScene extends ORE.BaseScene{
 
     onTouchStart( cursor: ORE.Cursor, event: MouseEvent ) {
 
+		if( cursor.position.x < window.innerWidth / 2 ){
+
+			this.nose.splash( this.scene.getObjectByName('splash_right').position );
+
+		}else{
+
+			this.nose.splash( this.scene.getObjectByName('splash_left').position );
+
+		}
+
+
 	}
 
     onTouchMove( cursor: ORE.Cursor, event: MouseEvent ) {
@@ -138,7 +150,9 @@ export class DandelionScene extends ORE.BaseScene{
 	}
 
 	onTouchEnd( cursor: ORE.Cursor, event: MouseEvent ) {
-
+		
+		this.nose.heal();
+		
 	}
 	
 	onHover( cursor: ORE.Cursor ) {

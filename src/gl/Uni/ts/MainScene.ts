@@ -49,7 +49,6 @@ export default class MainScene extends ORE.BaseScene{
 			value: this.softUni.mouseVertRotator.scrollVel
 		})
 		
-		this.onResize(window.innerWidth,window.innerHeight);
 	}
 
 	animate(){
@@ -61,16 +60,16 @@ export default class MainScene extends ORE.BaseScene{
 		// this.renderer.render(this.scene,this.camera);	
 	}
 
-	onResize(width, height) {
-		super.onResize(width,height);
-		let aspect = width / height;
-        if(aspect > 1.0){
+	onResize( args: ORE.ResizeArgs ) {
+		super.onResize( args );
+		
+        if(args.aspectRatio > 1.0){
             this.camera.position.z = 7;
         }else{
             this.camera.position.z = 10;
 		}
 		this.camera.lookAt(0,-0.0,0);
-		this.pp.resize(width,height);
+		this.pp.resize(args.windowPixelSize.x,args.windowPixelSize.y);
 	}
 
     onTouchStart( cursor: ORE.Cursor, event:MouseEvent) {

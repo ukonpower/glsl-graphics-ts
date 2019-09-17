@@ -66,15 +66,13 @@ export class FireworksScene extends ORE.BaseScene{
 	
 	}
 
-	onResize( width: number, height: number ) {
+	onResize( args: ORE.ResizeArgs ) {
 	
-		super.onResize( width, height );
+		super.onResize( args );
 
-		this.bloom.resize( width, height );
+		this.bloom.resize( args.windowPixelSize );
 
-		let aspect = width / height;
-
-		if( aspect > 1.0 ){
+		if( args.aspectRatio> 1.0 ){
 			// pc
 
 			this.camera.position.z = 5;

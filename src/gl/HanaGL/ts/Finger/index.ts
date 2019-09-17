@@ -27,7 +27,7 @@ export class Finger extends THREE.Object3D{
 			roughness: 0.9,
 		})
 
-		// this.add( this.meshFinger );
+		this.add( this.meshFinger );
 
 	}
 
