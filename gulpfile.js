@@ -101,6 +101,7 @@ gulp.task('clean', function(c){
 });
 
 gulp.task('watch', function(){
+    gulp.watch('./glpower/**/*', gulp.series('webpack'));
     gulp.watch(srcBase + 'ts/**/*', gulp.series('webpack'));
     gulp.watch(srcBase + 'scss/*.scss', gulp.task('sass'));
     gulp.watch(srcBase + 'pug/**/*.pug', gulp.task('pug'));

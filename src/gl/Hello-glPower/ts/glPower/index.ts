@@ -1,0 +1,54 @@
+import * as GLP from '../../../../glpower/src';
+
+import frag from './shaders/glpower.fs';
+import vert from './shaders/glpower.vs';
+
+export class glPower extends GLP.Empty{
+
+	private uniforms: GLP.Uniforms;
+	
+	constructor(){
+
+		super();
+		
+		let geo = new GLP.Geometry;
+
+		let loader = new GLP.GLTFLoader();
+
+		this.uniforms = {
+			time: {
+				value: 0
+			}
+		}
+		
+		let mat = new GLP.Material({
+			frag: frag,
+			vert: vert,
+			uniforms: this.uniforms,
+		});
+		
+		loader.load( './assets/glpower.gltf', ( data ) => {
+
+			geo.add( 'position', data.glpower.position.array, data.glpower.position.size );
+			geo.add( 'normal', data.glpower.normal.array, data.glpower.normal.size );
+			geo.add( 'index', data.glpower.indices.array, data.glpower.indices.size );
+			geo.add( 'ind', data.glpower.indices.array, data.glpower.indices.size );
+			
+			let glpower  = new GLP.RenderingObject({
+				geo: geo,
+				mat: mat
+			});
+	
+			this.add( glpower );
+			
+		});
+		
+	}
+
+	public update( time: number ){
+
+		this.uniforms.time.value = time;
+		
+	}
+	
+}
