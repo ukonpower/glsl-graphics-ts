@@ -4,6 +4,7 @@ import vert from './shaders/cube.vs';
 import frag from './shaders/cube.fs';
 import { glPower } from './glPower';
 import { Background } from './Background';
+import { FloatingObj } from './FloatingObj';
 
 export class APP{
 
@@ -16,6 +17,7 @@ export class APP{
 	private time: number = 0;
 
 	private glpower: glPower;
+	private floatingObj: FloatingObj;
 	private background: Background;
 
 	constructor(){
@@ -44,9 +46,12 @@ export class APP{
 		this.camera = new GLP.Camera( 50, 0.1, 1000, window.innerWidth / window.innerHeight );
 		this.camera.position.set( 0, 0, 5 );
 
-		this.glpower = new glPower();
+		this.glpower = new glPower( this.gl );
 		this.scene.add( this.glpower );
 
+		this.floatingObj = new FloatingObj( this.gl );
+		this.scene.add( this.floatingObj );
+		
 		this.background = new Background();
 		this.scene.add( this.background );
 		
@@ -59,6 +64,8 @@ export class APP{
 
 		this.glpower.update( this.time );
 
+		this.floatingObj.update( this.time )
+		
 		this.background.update( this.time );
 		
 		this.renderer.render( this.scene, this.camera );

@@ -7,9 +7,15 @@ export class glPower extends GLP.Empty{
 
 	private uniforms: GLP.Uniforms;
 	
-	constructor(){
+	private gl: WebGLRenderingContext;
+	
+	private glpower: GLP.RenderingObject;
+	
+	constructor( gl: WebGLRenderingContext ){
 
 		super();
+		
+		this.gl = gl;
 		
 		let geo = new GLP.Geometry;
 
@@ -34,12 +40,12 @@ export class glPower extends GLP.Empty{
 			geo.add( 'index', data.glpower.indices.array, data.glpower.indices.size );
 			geo.add( 'ind', data.glpower.indices.array, data.glpower.indices.size );
 			
-			let glpower  = new GLP.RenderingObject({
+			this.glpower = new GLP.RenderingObject({
 				geo: geo,
-				mat: mat
+				mat: mat,
 			});
 	
-			this.add( glpower );
+			this.add( this.glpower );
 			
 		});
 		
@@ -48,7 +54,8 @@ export class glPower extends GLP.Empty{
 	public update( time: number ){
 
 		this.uniforms.time.value = time;
-		
+
+
 	}
 	
 }
