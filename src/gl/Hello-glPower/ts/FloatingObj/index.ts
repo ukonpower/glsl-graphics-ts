@@ -75,7 +75,7 @@ export class FloatingObj extends GLP.Empty{
 
 	public update( time: number ){
 
-		this.uni.time.value = time;
+		// this.uni.time.value = time;
 		
 	}
 
