@@ -20,6 +20,8 @@ export class APP{
 	private floatingObj: FloatingObj;
 	private background: Background;
 
+	private rend: boolean = true;
+
 	constructor(){
 
 		this.renderer = new GLP.Renderer({
@@ -48,13 +50,22 @@ export class APP{
 
 		this.glpower = new glPower( this.gl );
 		this.scene.add( this.glpower );
-
+		
 		this.floatingObj = new FloatingObj( this.gl );
+		this.floatingObj.name = 'floating obj';
 		this.scene.add( this.floatingObj );
 		
-		this.background = new Background();
+		this.background = new Background( this.gl );
+		this.background.name = 'background';
 		this.scene.add( this.background );
 		
+		setTimeout( () => {
+
+			this.floatingObj.visible = true;
+			
+		}, 1000)
+
+		this.floatingObj.visible = false;
 
 	}
 
@@ -67,10 +78,15 @@ export class APP{
 		this.floatingObj.update( this.time )
 		
 		this.background.update( this.time );
-		
+
 		this.renderer.render( this.scene, this.camera );
 
-		requestAnimationFrame( this.animate.bind( this ) );
+		if( this.rend ){
+
+			requestAnimationFrame( this.animate.bind( this ) );
+
+		}
+		
 
 	}
 

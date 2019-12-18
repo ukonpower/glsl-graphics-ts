@@ -6,8 +6,8 @@ import vert from './shaders/background.vs';
 export class Background extends GLP.RenderingObject{
 
 	private uniforms;
-	
-	constructor(){
+
+	constructor( gl: WebGLRenderingContext ){
 
 		let uniforms = {
 			time: {
@@ -18,14 +18,14 @@ export class Background extends GLP.RenderingObject{
 		let mat = new GLP.Material({
 			vert: vert,
 			frag: frag,
-			uniforms: uniforms
-		})												
+			uniforms: uniforms,
+		})										
 		
 		let geo = new GLP.PlaneGeometry( 2, 2 );
 		
 		super({
 			geo: geo,
-			mat: mat,	
+			mat: mat,
 		});
 
 		this.uniforms = uniforms;

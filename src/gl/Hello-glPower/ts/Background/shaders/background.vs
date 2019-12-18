@@ -18,7 +18,7 @@ mat2 rotate(float rad) {
 void main( void ){
 
 	vec3 pos = position;
-	pos.z = 0.99;
+	pos.z = 1.0;
 
 	vUv = uv;
 

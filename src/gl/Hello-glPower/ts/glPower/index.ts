@@ -34,17 +34,18 @@ export class glPower extends GLP.Empty{
 		});
 		
 		loader.load( './assets/glpower.gltf', ( data ) => {
-
+			
 			geo.add( 'position', data.glpower.position.array, data.glpower.position.size );
 			geo.add( 'normal', data.glpower.normal.array, data.glpower.normal.size );
 			geo.add( 'index', data.glpower.indices.array, data.glpower.indices.size );
-			geo.add( 'ind', data.glpower.indices.array, data.glpower.indices.size );
 			
 			this.glpower = new GLP.RenderingObject({
 				geo: geo,
 				mat: mat,
 			});
 	
+			this.glpower.name = 'glpower';
+			
 			this.add( this.glpower );
 			
 		});

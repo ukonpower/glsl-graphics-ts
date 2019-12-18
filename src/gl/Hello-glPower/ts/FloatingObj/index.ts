@@ -38,15 +38,14 @@ export class FloatingObj extends GLP.Empty{
 		loader.load( './assets/glpower.gltf', ( data ) => {
 
 			let geo = new GLP.Geometry();
-			
-			geo.add( 'position', data.glpower.position.array, data.glpower.position.size );
 			geo.add( 'normal', data.glpower.normal.array, data.glpower.normal.size );
+			geo.add( 'position', data.glpower.position.array, data.glpower.position.size );
 			geo.add( 'index', data.glpower.indices.array, data.glpower.indices.size );
 			
 			let offsetPos = [];
 			let n = [];
 			
-			for( let i = 0; i < 200; i++ ){
+			for( let i = 0; i < 50; i++ ){
 
 				n.push( i );
 				
@@ -66,6 +65,7 @@ export class FloatingObj extends GLP.Empty{
 				mat: mat,
 				drawType: this.gl.LINE_LOOP
 			});
+			obj.name = 'floating obj';
 	
 			this.add( obj );
 			
@@ -75,7 +75,7 @@ export class FloatingObj extends GLP.Empty{
 
 	public update( time: number ){
 
-		// this.uni.time.value = time;
+		this.uni.time.value = time;
 		
 	}
 
