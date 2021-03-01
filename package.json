@@ -28,6 +28,6 @@
   },
   "dependencies": {
     "ore-three-ts": "^0.3.5",
-    "three": "^0.108.0"
+    "three": "^0.125.0"
   }
 }
